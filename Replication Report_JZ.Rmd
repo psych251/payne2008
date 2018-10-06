@@ -1,0 +1,103 @@
+---
+title: "Replication of The Study by Payne et al. (2008, Psychological Science)"
+author: "Jinxiao Zhang (jinx.zhang@stanford.edu)"
+date: "`r format(Sys.time(), '%Oct %6, %2018')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+---
+
+<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+##Introduction
+
+  I am interested in the influence of sleep on emotional functions. This study by Payne and colleagues is one of the earliest and most cited studies on the effect of sleep on emotional memory. I plan to replicate their finding that sleep specifically enhances memory of emotional objects as compared with an equal time duration of wakefulness.
+  
+  This replication study will recruit 50 participants to be randomly assigned to either a wake-delay condition or a sleep-delay condition. Participants in the wake-delay condiiton view the stimuli at 9 am and are tested 12 hours later at 9 pm. Participants in the sleep-delay condition view the stimuli at 9 pm and are tested at 9 am. In the learning phase, participants view a set of scences with either a nagetive object (e.g., a car accident) or a neutral object (e.g., an intact car) on a neutral background (e.g., a street). They give a rating to each scence of how they would approach or move away from that scene. Twelve hours later in the test phase, they are presented with a series of objects and backgrounds one at a time. Some of the objects and backgrounds are identical to those in the learning phase, some of the objects and backgrounds are similar but not identical to those in the learning phase, and others are new objects and backgrounds. For each object or background, participants indicate whether it is identical, similar, or new to those learned 12 hour ago.
+  
+  There two major challenges for this replication project. First, the original authors did not share their stimuli with the paper. I need to first contact the authors for the stimuli. Or if I do not get the stimuli from the authors, I need to create a set of picture stimuli by myself. Second, participants may not necessarily comply with the experiment starting time. I need to design ways to ensure participants start their 2 phases at the designated time (9 am or 9 pm).
+  
+*Links*
+[my repo]() and [the original paper]()
+
+
+##Methods
+
+###Power Analysis
+
+Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
+
+###Planned Sample
+
+Planned sample size and/or termination rule, sampling frame, known demographics if any, preselection rules if any.
+
+###Materials
+
+All materials - can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
+
+###Procedure	
+
+Can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
+
+###Analysis Plan
+
+Can also quote directly, though it is less often spelled out effectively for an analysis strategy section.  The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible.  
+
+**Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
+
+###Differences from Original Study
+
+Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study.  The goal, of course, is to minimize those differences, but differences will inevitably occur.  Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.
+
+### Methods Addendum (Post Data Collection)
+
+You can comment this section out prior to final report with data collection.
+
+#### Actual Sample
+  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+
+#### Differences from pre-data collection methods plan
+  Any differences from what was described as the original plan, or “none”.
+
+
+##Results
+
+
+### Data preparation
+
+Data preparation following the analysis plan.
+	
+```{r include=F}
+###Data Preparation
+
+####Load Relevant Libraries and Functions
+
+####Import data
+
+#### Data exclusion / filtering
+
+#### Prepare data for analysis - create columns etc.
+```
+
+### Confirmatory analysis
+
+The analyses as specified in the analysis plan.  
+
+*Side-by-side graph with original graph is ideal here*
+
+###Exploratory analyses
+
+Any follow-up analyses desired (not required).  
+
+## Discussion
+
+### Summary of Replication Attempt
+
+Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+
+### Commentary
+
+Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
