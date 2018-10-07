@@ -16,12 +16,16 @@ output:
 
   I am interested in the influence of sleep on emotional functions. This study by Payne and colleagues is one of the earliest and most cited studies on the effect of sleep on emotional memory. I plan to replicate their finding that sleep specifically enhances memory of emotional objects as compared with an equal time duration of wakefulness.
   
-  This replication study will recruit 50 participants to be randomly assigned to either a wake-delay condition or a sleep-delay condition. Participants in the wake-delay condiiton view the stimuli at 9 am and are tested 12 hours later at 9 pm. Participants in the sleep-delay condition view the stimuli at 9 pm and are tested at 9 am. In the learning phase, participants view a set of scences with either a nagetive object (e.g., a car accident) or a neutral object (e.g., an intact car) on a neutral background (e.g., a street). They give a rating to each scence of how they would approach or move away from that scene. Twelve hours later in the test phase, they are presented with a series of objects and backgrounds one at a time. Some of the objects and backgrounds are identical to those in the learning phase, some of the objects and backgrounds are similar but not identical to those in the learning phase, and others are new objects and backgrounds. For each object or background, participants indicate whether it is identical, similar, or new to those learned 12 hour ago.
+  This replication study will recruit 50 participants to be randomly assigned to either a wake-delay condition or a sleep-delay condition. Participants in the wake-delay condiiton view the stimuli at 9 am and are tested 12 hours later at 9 pm. Participants in the sleep-delay condition view the stimuli at 9 pm and are tested at 9 am. In the learning phase, participants view a set of scences with either a nagetive object (e.g., a car accident) or a neutral object (e.g., an intact car) on a neutral background (e.g., a street). Twelve hours later in the test phase, they are presented with a series of objects and backgrounds one at a time. Some of the objects and backgrounds are identical to those in the learning phase, some of the objects and backgrounds are similar but not identical to those in the learning phase, and others are new objects and backgrounds. For each object or background, participants indicate whether it is identical, similar, or new to those learned 12 hours ago.
   
-  There two major challenges for this replication project. First, the original authors did not share their stimuli with the paper. I need to first contact the authors for the stimuli. Or if I do not get the stimuli from the authors, I need to create a set of picture stimuli by myself. Second, participants may not necessarily comply with the experiment starting time. I need to design ways to ensure participants start their 2 phases at the designated time (9 am or 9 pm).
+  There are two major challenges for this replication project. First, the original authors did not share their stimuli with the paper. I need to first contact the authors for the stimuli. If unfortunately I do not get the stimuli from the authors, I need to create a set of picture stimuli by myself. Second, participants may not necessarily comply with the experiment timing requirement. I need to design ways to ensure participants start their 2 phases at the designated time (9 am or 9 pm).
   
-*Links*
-[my repo]() and [the original paper]()
+*Links to*
+[my repo](https://github.com/tepzhang/payne2008) and [the original paper](https://github.com/tepzhang/payne2008/blob/master/original_paper/Payne%20et%20al.%202008%20PS.pdf)
+
+```{r, echo= FALSE}
+# R pub: http://rpubs.com/jxzhang/psych251
+```
 
 
 ##Methods
