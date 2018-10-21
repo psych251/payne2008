@@ -1,0 +1,15 @@
+*.DS_Store
+*.html
+*.png
+*.docx
+*.doc
+*.jpg
+*.gif
+*.Rproj
+*.Rproj.user
+*.Rhistory
+*.Ruserdata
+*.history
+*.RData
+*.zip
+
