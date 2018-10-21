@@ -4,6 +4,7 @@
 *.docx
 *.doc
 *.jpg
+*.txt
 *.gif
 *.Rproj
 *.Rproj.user
@@ -12,4 +13,5 @@
 *.history
 *.RData
 *.zip
+*.dcf
 
