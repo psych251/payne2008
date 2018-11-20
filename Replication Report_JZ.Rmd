@@ -1,7 +1,7 @@
 ---
 title: "Replication of The Study by Payne et al. (2008, Psychological Science)"
 author: "Jinxiao Zhang (jinx.zhang@stanford.edu)"
-date: "`r format(Sys.time(), '%Oct %6, %2018')`"
+date: "`r format(Sys.time())`"
 output:
   html_document:
     toc: yes
@@ -15,7 +15,7 @@ output:
 
 (Since I have not got stimuli from the authors, the experiment is just a demo using non-original pictures.)
 
-<!-- R pub: http://rpubs.com/jxzhang/psych251  -->
+<!-- R pub: http://rpubs.com/jxzhang/psych251_report  -->
 
 <!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
 
@@ -30,7 +30,7 @@ output:
 ##Methods
 ###Power Analysis
 
-The original sample size is n=48 with 24 in the wake-delay condition and 24 in the sleep-delay condition. The major result in Payne et al. (2018) is a 2-way within-between interaction with $\eta^2_{p}$ = .20. To detect such effect size ($\eta^2_{p}$ = .20 or equivalently f = .5) with 80% power and an assumed medium correlation = .3 among repeated measures, a total sample size = 14 is required. To achieve 90% and 95% poewr, a total sample size = 18 and 22 is required respectively.
+The original sample size is n=48 with 24 in the wake-delay condition and 24 in the sleep-delay condition. The major result in Payne et al. (2018) is a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) within-between interaction on recognition of objects, *F*(1, 46) = 11.5, *p* = .001, $\eta^2_{p}$ = .20. To detect such effect size ($\eta^2_{p}$ = .20 or equivalently f = .5) with 80% power and an assumed medium correlation = .3 among repeated measures, a total sample size = 14 is required. To achieve 90% and 95% poewr, a total sample size = 18 and 22 is required respectively.
 
 ###Planned Sample
 
@@ -51,7 +51,7 @@ The recognition task included 32 same objects (16 negative, 16 neutral), 32 simi
 
 ###Analysis Plan
 
-"We scored a response as specific recognition of visual details when a subject correctly responded "same" to a *same* item, but as general recognition without specific details when a subject responded "similar" to a *same* item. Because "similar" responses were constrained by the number of "same" responses (i.e., subjects responded "similar" only when they did not remember the visual details), we computed the general recognition score as the proportion of "similar" responses after exclusion of "same" responses (similar/[1???same])." "Specific and general recognition scores were computed separately for central objects (negative or neutral) and for the peripheral neutral backgrounds (studied with either a negative or a neutral object). " To replicate the results, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA was applied on general recognition. And planned follow-up 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA were applied on the recognition of objects and backgrounds separately.
+"We scored a response as specific recognition of visual details when a subject correctly responded "same" to a *same* item, but as general recognition without specific details when a subject responded "similar" to a *same* item. Because "similar" responses were constrained by the number of "same" responses (i.e., subjects responded "similar" only when they did not remember the visual details), we computed the general recognition score as the proportion of "similar" responses after exclusion of "same" responses (similar/[1- same])." "Specific and general recognition scores were computed separately for central objects (negative or neutral) and for the peripheral neutral backgrounds (studied with either a negative or a neutral object). " To replicate the results, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA was applied on general recognition. And planned follow-up 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA were applied on the recognition of objects and backgrounds separately.
 
 **Clarify key analysis of interest here** A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA was applied on specific recognition. And planned follow-up 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA were applied on the recognition of objects and backgrounds separately. These analyses were conducted in the original study but no significant 3-way interaction was found.
 
@@ -74,21 +74,130 @@ You can comment this section out prior to final report with data collection.
 
 ### Data preparation
 
-Data preparation following the analysis plan.
+Participation time in both sessions will be checked first. Participants who did the experiment out outside the study window (8-10 am and 8-10 pm) will be excluded.
+
+There are 2 attention-check questions in session 1 rating data. Participants who failed either attention check will be excluded from further analysis. Ratings of approach-withdraw towards 64 picture stimuli in session 1 will be gathered into a long form with a label of either neutral scene or negative scene. Ratings of neutral scenes and negative scenes will be compared as a manipulation check (participants are expected to have higher withdraw ratings towards negative scenes than neutral scenes).
+
+In session 2, participants give a response as "yes" or "no" to each stimulus, and for "yes" responses they further indicate whether it is "same" or "similar". Data will be gathered into a long form so that one trial is in a row and a "response" variable will be created. The value of "response" will be determined as "same", "similar", or "new" by incorporating information from the raw responses. Labels of "component" (object or background), "valence" (neutral or negative), and "stimulus_type" (same, similar or new) will be specified for each trial. A "specific recognition"" score will be calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score will be calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant.
 	
-```{r include=F}
+```{r include=T}
 ###Data Preparation
+# dowload from Qualtrics
 
 ####Load Relevant Libraries and Functions
+library(tidyverse)
+library(ggplot2)
+library(stringr)
+library(lubridate)# date and time
+library(lme4)
+library(lmerTest) #optional: show p-value in lmer summary
 
 ####Import data
+data_raw <- read_csv("data/PSYCH251+Session+2_November+20%2C+2018_11.54.csv")
 
 #### Data exclusion / filtering
+data <- data_raw[-c(1:2),]
+data <- data %>% 
+  select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -starts_with("Recipient"), -contains("s2p"), -ExternalReference) %>% 
+  filter(Progress == "100")
 
 #### Prepare data for analysis - create columns etc.
+
+# temp1: data with Q1 gathered
+temp1 <- data %>% select(-contains("s2_q2")) %>% gather(item, s2_q1, contains("s2_q1")) %>% mutate(item = substr(item, 1, str_length(item)-3))
+# temp2: data with Q2 gathered
+temp2 <- data %>% select(ResponseId, contains("s2_q2")) %>% gather(item, s2_q2, contains("s2_q2"))%>% mutate(item = substr(item, 1, str_length(item)-3))
+# merge Q1 and Q2
+data <- merge(temp1, temp2,by=c("ResponseId","item"))
+# create an "s2 answer" variable (same, similar, new)
+data <-  data %>%
+  mutate(s2_answer = ifelse(s2_q1 == "No", "new", ifelse(s2_q2 == "Yes", "same", ifelse(s2_q2 == "No", "similar", "error"))))
+# create item_number and rearrange the dataframe
+data <- data %>% mutate(item_number = as.numeric(str_sub(item, 1, str_length(item)-3))) %>% arrange(ResponseId, item_number) 
+
+
+# categorize participants into sleep-condition and wake-condition
+data <- data %>% mutate(time = ymd_hms(StartDate), condition = ifelse(hour(time)< 12, "sleep", "wake"))
+
+# create item list
+item_list = data.frame(item_number = c(1:192))
+# counterbalancing list
+A <- c(1:8)
+B <- c(9:16)
+C <- c(17:24)
+D <- c(25:32)
+E <- c(33:40)
+F <- c(41:48)
+G <- c(49:56)
+H <- c(55:64)
+# create component (object or background)
+item_list <- item_list %>% mutate(component = ifelse(item_number %in% c(1:64, 129:160), "object", "backgrond"))
+# create valence (neutral or negative)
+item_list <- item_list %>% mutate(valence = ifelse(item_number %in% c(A, B, E, F,  #object
+                                                                 A+64, B+64, E+64, F+64, #background
+                                                                 A+128+16, B+128+16, 161:192), #new items
+                                                   "neutral", "negative"))
+# create item type (same, similar, or new)
+item_list <- item_list %>% mutate(type = ifelse(item_number %in% c(A, C, E, G, A+64, B+64, C+64, D+64), "same", ifelse(item_number %in% 129:192, "new", "similar") ))
+
+# merge the item list to the data frame
+data <-  merge(data, item_list, by = "item_number") 
+# rearrange
+data <- data %>% arrange(ResponseId, item_number) 
+
+## summerize into individual-wise data
+data <- data %>% 
+  filter(type == "same") %>% 
+  group_by(ResponseId, condition, component, valence, s2_answer) %>% 
+  mutate(count_ans = n()) #the number of all answers (same, similar, new)
+data <- data %>% 
+  filter(type == "same") %>% 
+  group_by(ResponseId, condition, component, valence) %>% 
+  mutate(count_all = n()) #the number of questions
+# collapse to individual level
+data_ind <- data %>% 
+  group_by(ResponseId, condition, component, valence, s2_answer) %>% 
+  summarise(count_ans = mean(count_ans, na.rm = T),count_all = mean(count_all, na.rm = T)) %>% 
+  filter(!is.na(s2_answer)) %>% #s2_answer has to have a value
+  spread(s2_answer, count_ans) #spread s2_answer
+
+data_ind[is.na(data_ind)] <-  0 #replace na with 0
+data_ind <-  data_ind %>% 
+  mutate(specific_recog = same/count_all, general_recog = similar/(count_all-same))
+
+
 ```
 
 ### Confirmatory analysis
+```{r}
+##  test on the 3-way interaction
+mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (1 | ResponseId), data_ind)
+mod1 <- lmer(general_recog ~ condition*component*valence + (1 | ResponseId), data_ind)
+summary(mod0)
+summary(mod1)
+anova(mod0, mod1)
+
+## test on the 2-way interaction
+mod2 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+summary(mod2)
+mod3 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+summary(mod3)
+anova(mod2, mod3)
+
+
+## plots
+data_summary <- data_ind %>% 
+  group_by(condition, component,valence) %>% 
+  summarise(specific_recog = mean(specific_recog, ns.rm = T), general_recog = mean(general_recog, ns.rm = T), count = n())
+
+# plot general recognition of object
+ggplot(data_summary %>% filter(component=="object"), aes(x = condition, y = general_recog, fill = valence))+
+  geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
+  scale_fill_brewer(palette = "Dark2")+ ggthemes::theme_few()
+
+
+```
+
 
 A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA on general recognition revleaed a 3-way condition by valence by scene component interaction, ...... As planned, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the recognition of objects showed a condition by valence interaction, ...... And a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the recognition of backgrounds showed no interaction effect, ......
 
@@ -97,6 +206,19 @@ A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene compone
 *Side-by-side graph with original graph is ideal here*
 
 ###Exploratory analyses
+```{r}
+## test on the 2-way interaction
+mod4 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+summary(mod4)
+mod5 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+summary(mod5)
+anova(mod4, mod5)
+
+# plot specific recognition of object
+ggplot(data_summary %>% filter(component=="object"), aes(x = condition, y = specific_recog, fill = valence))+
+  geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5)+ 
+  scale_fill_brewer(palette = "Dark2")+ggthemes::theme_few()
+```
 
 A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA on specific recognition showed ......
 
