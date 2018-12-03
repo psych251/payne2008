@@ -11,9 +11,8 @@ output:
 ---
   
 *Links to*
-[my repo](https://github.com/tepzhang/payne2008), [the experiments demo](http://web.stanford.edu/~jzhang18/psych251/my_tasks/task_learning.html) and [the original paper](https://github.com/tepzhang/payne2008/blob/master/original_paper/Payne%20et%20al.%202008%20PS.pdf)
+[my repo](https://github.com/tepzhang/payne2008), [session 1 experiment](https://stanforduniversity.qualtrics.com/jfe/form/SV_0jLDw3H3QLV7Usl), [session 2 experiment](https://stanforduniversity.qualtrics.com/jfe/form/SV_77jw7DtC0C3R1Zz), and [the original paper](https://github.com/tepzhang/payne2008/blob/master/original_paper/Payne%20et%20al.%202008%20PS.pdf)
 
-(Since I have not got stimuli from the authors, the experiment is just a demo using non-original pictures.)
 
 <!-- R pub: http://rpubs.com/jxzhang/psych251_report  -->
 
@@ -21,11 +20,9 @@ output:
 
 ##Introduction
 
-  This study by Payne and colleagues is one of the earliest and most cited studies on the effect of sleep on emotional memory. Participants in 4 conditions viewed neutral and negative scences before a recognition test. Participants in the morning 30-min condition and the evening 30-min condition were tested 30 minutes after viewing the scences in the morning and in the evening respectively. Participants in the wake-delay condition viewed the scences in the morning and were tested 12 hours later in the evening with no daytime sleep.  Participants in the sleep-delay condition viewed the scences in the evening and were tested 12 hours later in the morning with night-time sleep. Participants in the morning 30-min condition and the evening 30-min conditions did not differ in their recognition of neutral or negative scenes, suggesting no circadian effect on the memory. However, recognition of negative objects were better recognized in the sleep-delay condition than the wake-delay condition. The recognition of neutral objects or background did not differ between the sleep-delay condition and the wake-delay condition. As there is no circadian effect, I plan to only replicate their finding that sleep specifically enhances memory of emotional objects as compared with an equal time duration of wakefulness.
+  This study by Payne and colleagues is one of the earliest and most cited studies on the effect of sleep on emotional memory. Participants in 4 conditions viewed neutral and negative scences before a recognition test. Participants in the morning 30-min condition and the evening 30-min condition were tested 30 minutes after viewing the scences in the morning and in the evening respectively. Participants in the wake-delay condition viewed the scences in the morning and were tested 12 hours later in the evening with no daytime sleep.  Participants in the sleep-delay condition viewed the scences in the evening and were tested 12 hours later in the morning with night-time sleep. Participants in the morning 30-min condition and the evening 30-min conditions did not differ in their recognition of neutral or negative scenes, suggesting no circadian effect on the memory. However, recognition of negative objects were better recognized in the sleep-delay condition than the wake-delay condition. The recognition of neutral objects or background did not differ between the sleep-delay condition and the wake-delay condition. As there is no circadian effect, this replication study only replicate their finding that sleep specifically enhances memory of emotional objects as compared with an equal time duration of wakefulness.
   
-  This replication study will recruit 48 participants to be randomly assigned to either a wake-delay condition or a sleep-delay condition. Participants in the wake-delay condiiton view the stimuli at 9 am and are tested 12 hours later at 9 pm. Participants in the sleep-delay condition view the stimuli at 9 pm and are tested at 9 am. In the learning phase, participants view a set of scences with either a nagetive object (e.g., a car accident) or a neutral object (e.g., an intact car) on a neutral background (e.g., a street). Twelve hours later in the test phase, they are presented with a series of objects and backgrounds one at a time. Some of the objects and backgrounds are identical to those in the learning phase, some of the objects and backgrounds are similar but not identical to those in the learning phase, and others are new objects and backgrounds. For each object or background, participants indicate whether it is identical, similar, or new to those learned 12 hours ago.
-  
-  There are two major challenges for this replication project. First, the original authors did not share their stimuli with the paper. I need to first contact the authors for the stimuli. If unfortunately I do not get the stimuli from the authors, I need to create a set of picture stimuli by myself. Second, participants may not necessarily comply with the experiment timing requirement. I need to design ways to ensure participants start their 2 phases at the designated time (9 am or 9 pm).
+  This replication study will recruit 48 participants to be randomly assigned to either a wake-delay condition or a sleep-delay condition. Participants in the wake-delay condition view the stimuli between 8 and 10 am and are tested 12 hours later between 8 and 10 pm. Participants in the sleep-delay condition view the stimuli between 8 and 10 pm and are tested between 8 and 10 am. In the learning phase, participants view a set of scences with either a nagetive object (e.g., a car accident) or a neutral object (e.g., an intact car) on a neutral background (e.g., a street). Twelve hours later in the test phase, they are presented with a series of objects and backgrounds one at a time. Some of the objects and backgrounds are identical to those in the learning phase, some of the objects and backgrounds are similar but not identical to those in the learning phase, and others are new objects and backgrounds. For each object or background, participants indicate whether it is identical, similar, or new to those learned 12 hours ago.
 
 ##Methods
 ###Power Analysis
@@ -38,7 +35,9 @@ Although the power analysis showed that a smaller sample size is needed than the
 
 ###Materials
 
-"The scenes portrayed negative arousing or neutral objects placed on plausible neutral backgrounds. For each of 64 scenes (e.g., a car on a street), we created eight different versions by placing each of two similar neutral objects (e.g., two images of a car) and each of two related negative objects (e.g., two images of a car accident) on each of two plausible neutral backgrounds (e.g., two images of a street). An additional 32 scenes served as lures on a recognition memory test (Fig. 1). Participants in a previous study had rated the objects and backgrounds for valence and arousal, using 7-point scales (Kensinger, Garoff-Eaton, & Schacter, 2006). All negative objects had received arousal ratings of 5 to 7 (with high scores signifying an exciting or arousing image) and valence ratings lower than 3 (with low scores signifying a negative image). All neutral items (objects and backgrounds) had been rated as nonarousing (arousal values lower than 4) and neutral (valence ratings between 3 and 5)." This was followed precisely.
+"The scenes portrayed negative arousing or neutral objects placed on plausible neutral backgrounds. For each of 64 scenes (e.g., a car on a street), we created eight different versions by placing each of two similar neutral objects (e.g., two images of a car) and each of two related negative objects (e.g., two images of a car accident) on each of two plausible neutral backgrounds (e.g., two images of a street). An additional 32 scenes served as lures on a recognition memory test (Fig. 1). Participants in a previous study had rated the objects and backgrounds for valence and arousal, using 7-point scales (Kensinger, Garoff-Eaton, & Schacter, 2006). All negative objects had received arousal ratings of 5 to 7 (with high scores signifying an exciting or arousing image) and valence ratings lower than 3 (with low scores signifying a negative image). All neutral items (objects and backgrounds) had been rated as nonarousing (arousal values lower than 4) and neutral (valence ratings between 3 and 5)." 
+
+This was followed precisely.
 
 ![**Fig. 1.** "Examples of the scenes presented to subjects. Eight versions of each scene were created by combining each of four similar objects (two neutral objects, two negative and arousing emotional objects) with each of two plausible neutral backgrounds. In this example, the two neutral central objects are cars, and the two negative central objects are cars damaged in an accident; the neutral backgrounds are street scenes. Two of the eight versions of the completed scene are shown."](http://journals.sagepub.com/na101/home/literatum/publisher/sage/journals/content/pssa/2008/pssa_19_8/j.1467-9280.2008.02157.x/20160829/images/medium/10.1111_j.1467-9280.2008.02157.x-fig1.gif)
 
@@ -47,21 +46,29 @@ Although the power analysis showed that a smaller sample size is needed than the
 
 After the delay period, participants performed an unexpected, self-paced recognition task. During this task, objects and backgrounds were presented separately and one at a time. Some of these objects and backgrounds were identical to the scene components that had been studied (e.g., the same car accident), others were the alternate version of the object or background and therefore shared the same verbal label but differed in specific visual details (e.g., a similar car accident), and others were objects or backgrounds that had not been studied (new). Participants never saw both the same and the similar version of an item at test. Each object or background was presented with a question (e.g., "Did you see a monkey?"). If the answer to the question was "yes," participants pressed one button to indicate that the object or background was an exact match to a studied component ("same") or a second button to indicate that it was not an exact match ("similar"). If the answer to the question was "no," they pressed a third button.2
 
-The recognition task included 32 same objects (16 negative, 16 neutral), 32 similar objects (16 negative, 16 neutral), 32 new objects (16 negative, 16 neutral), 32 same backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), 32 similar backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), and 32 new backgrounds." This was followed precisely.
+The recognition task included 32 same objects (16 negative, 16 neutral), 32 similar objects (16 negative, 16 neutral), 32 new objects (16 negative, 16 neutral), 32 same backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), 32 similar backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), and 32 new backgrounds." 
+
+This was followed precisely.
 
 ###Analysis Plan
 
-"We scored a response as specific recognition of visual details when a subject correctly responded "same" to a *same* item, but as general recognition without specific details when a subject responded "similar" to a *same* item. Because "similar" responses were constrained by the number of "same" responses (i.e., subjects responded "similar" only when they did not remember the visual details), we computed the general recognition score as the proportion of "similar" responses after exclusion of "same" responses (similar/[1- same])." "Specific and general recognition scores were computed separately for central objects (negative or neutral) and for the peripheral neutral backgrounds (studied with either a negative or a neutral object). " To replicate the results, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA was applied on general recognition. And planned follow-up 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA were applied on the recognition of objects and backgrounds separately.
+"We scored a response as specific recognition of visual details when a subject correctly responded "same" to a *same* item, but as general recognition without specific details when a subject responded "similar" to a *same* item. Because "similar" responses were constrained by the number of "same" responses (i.e., subjects responded "similar" only when they did not remember the visual details), we computed the general recognition score as the proportion of "similar" responses after exclusion of "same" responses (similar/[1- same])." "Specific and general recognition scores were computed separately for central objects (negative or neutral) and for the peripheral neutral backgrounds (studied with either a negative or a neutral object). " 
 
-**Clarify key analysis of interest here** A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA was applied on specific recognition. And planned follow-up 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA were applied on the recognition of objects and backgrounds separately. These analyses were conducted in the original study but no significant 3-way interaction was found.
+To replicate the results, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA was applied on general recognition. And planned follow-up 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA were applied on the recognition of objects and backgrounds separately.
+
+**Clarify key analysis of interest here** The key analysis in this replication is the 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the general recognition of objects.
 
 ###Differences from Original Study
 
 This replication project differs from the original study in two major ways. First, the original experiments were run in a laboratory while the current replication experiments were run online. Second, participants in the original study were college students while participants in the current replication study were workers on Amazon Mechanical Turk. These differences were not anticipated to make a difference based on the claim in the original paper that "memory for a negative scene develops differentially across time delays containing sleep and wake, with sleep selectively consolidating those aspects of memory that are of greatest value to the organism."
 
+<!-- 
+
 ### Methods Addendum (Post Data Collection)
 
 You can comment this section out prior to final report with data collection.
+
+-->
 
 #### Actual Sample
   Sample size, demographics, data exclusions based on rules spelled out in analysis plan
@@ -76,11 +83,11 @@ You can comment this section out prior to final report with data collection.
 
 Participation time in both sessions will be checked first. Participants who did the experiment out outside the study window (8-10 am and 8-10 pm) will be excluded.
 
-There are 2 attention-check questions in session 1 rating data. Participants who failed either attention check will be excluded from further analysis. Ratings of approach-withdraw towards 64 picture stimuli in session 1 will be gathered into a long form with a label of either neutral scene or negative scene. Ratings of neutral scenes and negative scenes will be compared as a manipulation check (participants are expected to have higher withdraw ratings towards negative scenes than neutral scenes).
+Ratings of approach-withdraw towards 64 picture stimuli in session 1 will be gathered into a long form with a label of either neutral scene or negative scene. Ratings of neutral scenes and negative scenes will be compared as a manipulation check (participants are expected to have higher withdraw ratings towards negative scenes than neutral scenes).
 
 In session 2, participants give a response as "yes" or "no" to each stimulus, and for "yes" responses they further indicate whether it is "same" or "similar". Data will be gathered into a long form so that one trial is in a row and a "response" variable will be created. The value of "response" will be determined as "same", "similar", or "new" by incorporating information from the raw responses. Labels of "component" (object or background), "valence" (neutral or negative), and "stimulus_type" (same, similar or new) will be specified for each trial. A "specific recognition"" score will be calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score will be calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant.
 	
-```{r include=T}
+```{r include = F}
 ###Data Preparation
 # dowload from Qualtrics
 
@@ -91,21 +98,28 @@ library(stringr)
 library(lubridate)# date and time
 library(lme4)
 library(lmerTest) #optional: show p-value in lmer summary
+```
 
+```{r }
 ####Import data
-data_raw <- read_csv("data/PSYCH251+Session+2_November+20%2C+2018_11.54.csv")
+#wake group data
+data_raw_wake <- read_csv("data/PSYCH251+Session+2_wake_December+2%2C+2018_18.07.csv")
+#sleep group data
+data_raw_sleep <- read_csv("data/PSYCH251+Session+2_sleep_December+2%2C+2018_18.06.csv")
+#combine the two raw datasets
+data_raw <- rbind(data_raw_wake,data_raw_sleep)
 
 #### Data exclusion / filtering
 data <- data_raw[-c(1:2),]
 data <- data %>% 
   select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -starts_with("Recipient"), -contains("s2p"), -ExternalReference) %>% 
-  filter(Progress == "100")
+  filter(Progress == "100", Status == "IP Address", code_s1 != "999999")
 
 #### Prepare data for analysis - create columns etc.
 
-# temp1: data with Q1 gathered
+# temp1: data with Q1 gathered (Q1: did you see this object/background?)
 temp1 <- data %>% select(-contains("s2_q2")) %>% gather(item, s2_q1, contains("s2_q1")) %>% mutate(item = substr(item, 1, str_length(item)-3))
-# temp2: data with Q2 gathered
+# temp2: data with Q2 gathered (Q2: Is this object/background identical to what you saw in session 1?)
 temp2 <- data %>% select(ResponseId, contains("s2_q2")) %>% gather(item, s2_q2, contains("s2_q2"))%>% mutate(item = substr(item, 1, str_length(item)-3))
 # merge Q1 and Q2
 data <- merge(temp1, temp2,by=c("ResponseId","item"))
@@ -113,7 +127,8 @@ data <- merge(temp1, temp2,by=c("ResponseId","item"))
 data <-  data %>%
   mutate(s2_answer = ifelse(s2_q1 == "No", "new", ifelse(s2_q2 == "Yes", "same", ifelse(s2_q2 == "No", "similar", "error"))))
 # create item_number and rearrange the dataframe
-data <- data %>% mutate(item_number = as.numeric(str_sub(item, 1, str_length(item)-3))) %>% arrange(ResponseId, item_number) 
+data <- data %>% mutate(item_number = as.numeric(str_sub(item, 1, str_length(item)-3))) %>%
+  arrange(ResponseId, item_number) 
 
 
 # categorize participants into sleep-condition and wake-condition
@@ -121,7 +136,7 @@ data <- data %>% mutate(time = ymd_hms(StartDate), condition = ifelse(hour(time)
 
 # create item list
 item_list = data.frame(item_number = c(1:192))
-# counterbalancing list
+# the counterbalancing list
 A <- c(1:8)
 B <- c(9:16)
 C <- c(17:24)
@@ -131,12 +146,13 @@ F <- c(41:48)
 G <- c(49:56)
 H <- c(55:64)
 # create component (object or background)
-item_list <- item_list %>% mutate(component = ifelse(item_number %in% c(1:64, 129:160), "object", "backgrond"))
+item_list <- item_list %>% mutate(component = ifelse(item_number %in% c(1:64, 129:160), "object", "background"))
 # create valence (neutral or negative)
-item_list <- item_list %>% mutate(valence = ifelse(item_number %in% c(A, B, E, F,  #object
-                                                                 A+64, B+64, E+64, F+64, #background
-                                                                 A+128+16, B+128+16, 161:192), #new items
-                                                   "neutral", "negative"))
+item_list <- item_list %>% 
+  mutate(valence = ifelse(item_number %in% c(A, B, E, F,  #object
+                                             A+64, B+64, E+64, F+64, #background
+                                             A+128+16, B+128+16, 161:192), #new items
+                                            "neutral", "negative"))
 # create item type (same, similar, or new)
 item_list <- item_list %>% mutate(type = ifelse(item_number %in% c(A, C, E, G, A+64, B+64, C+64, D+64), "same", ifelse(item_number %in% 129:192, "new", "similar") ))
 
@@ -163,8 +179,8 @@ data_ind <- data %>%
 
 data_ind[is.na(data_ind)] <-  0 #replace na with 0
 data_ind <-  data_ind %>% 
-  mutate(specific_recog = same/count_all, general_recog = similar/(count_all-same))
-
+  mutate(specific_recog = same/count_all, #specific recognition
+         general_recog = similar/(count_all-same)) #general recognition
 
 ```
 
@@ -172,27 +188,43 @@ data_ind <-  data_ind %>%
 ```{r}
 ##  test on the 3-way interaction
 mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (1 | ResponseId), data_ind)
-mod1 <- lmer(general_recog ~ condition*component*valence + (1 | ResponseId), data_ind)
 summary(mod0)
+mod1 <- lmer(general_recog ~ condition*component*valence + (1 | ResponseId), data_ind)
 summary(mod1)
 anova(mod0, mod1)
 
-## test on the 2-way interaction
+## test on the key 2-way interaction on object
 mod2 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
 summary(mod2)
 mod3 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
 summary(mod3)
 anova(mod2, mod3)
 
+## test on the 2-way interaction on background
+mod4 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "background"))
+summary(mod4)
+mod5 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "background"))
+summary(mod5)
+anova(mod4, mod5)
 
-## plots
+# summarize data for plotting
 data_summary <- data_ind %>% 
   group_by(condition, component,valence) %>% 
-  summarise(specific_recog = mean(specific_recog, ns.rm = T), general_recog = mean(general_recog, ns.rm = T), count = n())
+  summarise(specific_recog = mean(specific_recog, na.rm = T), 
+            #sd_spe_recog = sd(specific_recog, na.rm = TRUE), # why NA???
+            #se_spe_recog = sd_spe_recog/sqrt(n()), 
+            #ci_spe_recog =  qt(0.975,df=length(specific_recog)-1)*se_spe_recog,
+            general_recog = mean(general_recog, na.rm = T), 
+            #sd_gen_recog = sd(general_recog, na.rm = TRUE), 
+            #se_gen_recog = sd_gen_recog/sqrt(n()), 
+            #ci_gen_recog =  qt(0.975,df=length(general_recog)-1)*se_gen_recog,
+            count = n())
+
 
 # plot general recognition of object
 ggplot(data_summary %>% filter(component=="object"), aes(x = condition, y = general_recog, fill = valence))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
+  labs(title = "general recognition of object")+
   scale_fill_brewer(palette = "Dark2")+ ggthemes::theme_few()
 
 
@@ -207,20 +239,21 @@ A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene compone
 
 ###Exploratory analyses
 ```{r}
-## test on the 2-way interaction
-mod4 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-summary(mod4)
-mod5 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-summary(mod5)
-anova(mod4, mod5)
+## test on the 2-way interaction on specific recognition of object
+mod6 <- lmer(specific_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+summary(mod6)
+mod7 <- lmer(specific_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+summary(mod7)
+anova(mod6, mod7)
 
 # plot specific recognition of object
 ggplot(data_summary %>% filter(component=="object"), aes(x = condition, y = specific_recog, fill = valence))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5)+ 
+  labs(title = "specific recognition of object")+
   scale_fill_brewer(palette = "Dark2")+ggthemes::theme_few()
 ```
 
-A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA on specific recognition showed ......
+A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on specific recognition of objects showed that ......
 
 (Any follow-up analyses desired (not required).) 
 
