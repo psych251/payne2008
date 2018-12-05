@@ -260,36 +260,35 @@ anova(mod6, mod7)
 # summarize data for plotting
 data_summary <- data_ind %>% 
   group_by(condition, component,valence) %>% 
-  summarise(specific_recog = mean(specific_recog, na.rm = T), 
-            sd_spe_recog = sd(specific_recog, na.rm = TRUE), # why NA???
-            #se_spe_recog = sd_spe_recog/sqrt(n()), 
-            #ci_spe_recog =  qt(0.975,df=length(specific_recog)-1)*se_spe_recog,
-            general_recog = mean(general_recog, na.rm = T), 
+  summarise(mean_spe_recog = mean(specific_recog, na.rm = T), 
+            sd_spe_recog = sd(specific_recog, na.rm = TRUE), 
+            se_spe_recog = sd_spe_recog/sqrt(n()), 
+            ci_spe_recog =  1.96*se_spe_recog,# qt(0.975,df=length(specific_recog)-1)
+            mean_gen_recog = mean(general_recog, na.rm = T), 
             sd_gen_recog = sd(general_recog, na.rm = TRUE), 
-            #se_gen_recog = sd_gen_recog/sqrt(n()), 
-            #ci_gen_recog =  qt(0.975,df=length(general_recog)-1)*se_gen_recog,
+            se_gen_recog = sd_gen_recog/sqrt(n()), 
+            ci_gen_recog =  1.96*se_gen_recog, # qt(0.975,df=length(general_recog)-1)
             count = n())
 # order the level of condition
 data_summary$condition <- factor(data_summary$condition, levels=c('wake', 'sleep'), ordered=TRUE)
 data_summary$component <- factor(data_summary$component, levels=c('object', 'background'), ordered=TRUE)
 
 head(data_summary)
-
-# this works though!
-# sd(data_ind$specific_recog)
 ```
 
 ```{r}
 # plot general recognition
-p1 <- ggplot(data_summary , aes(x = condition, y = general_recog, fill = component))+
+p1 <- ggplot(data_summary , aes(x = condition, y = mean_gen_recog, fill = component))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
+  geom_errorbar(aes(ymin=mean_gen_recog - ci_gen_recog, ymax=mean_gen_recog + ci_gen_recog), position=position_dodge(.5), width=.2, size=1) +
   facet_grid(. ~ valence)+
   labs(title = "General recognition")+
   scale_fill_grey()+ ggthemes::theme_few()
 
 # plot specific recognition
-p2 <- ggplot(data_summary , aes(x = condition, y = specific_recog, fill = component))+
+p2 <- ggplot(data_summary , aes(x = condition, y = mean_spe_recog, fill = component))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
+  geom_errorbar(aes(ymin=mean_spe_recog - ci_spe_recog, ymax=mean_spe_recog + ci_spe_recog), position=position_dodge(.5), width=.2, size=1) +
   facet_grid(. ~ valence)+
   labs(title = "Specific recognition")+
   scale_fill_grey()+ ggthemes::theme_few()
