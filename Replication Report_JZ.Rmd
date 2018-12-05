@@ -92,143 +92,152 @@ In session 2, participants give a response as "yes" or "no" to each stimulus, an
 # dowload from Qualtrics
 
 ####Load Relevant Libraries and Functions
+library(qualtRics)
 library(tidyverse)
 library(ggplot2)
+library(cowplot)
 library(stringr)
 library(lubridate)# date and time
 library(lme4)
 library(lmerTest) #optional: show p-value in lmer summary
+
+setwd("C:/Users/tepzh/Dropbox/Stanford/PSYCH251 experimental methods/replication project/payne2008")
 ```
 
 ```{r }
 ####Import data
 #wake group data
-data_raw_wake <- read_csv("data/PSYCH251+Session+2_wake_December+2%2C+2018_18.07.csv")
+data_raw_wake <- readSurvey("data/PSYCH251+Session+2_sleep.csv")
 #sleep group data
-data_raw_sleep <- read_csv("data/PSYCH251+Session+2_sleep_December+2%2C+2018_18.06.csv")
+data_raw_sleep <- readSurvey("data/PSYCH251+Session+2_wake.csv")
 #combine the two raw datasets
 data_raw <- rbind(data_raw_wake,data_raw_sleep)
 
 #### Data exclusion / filtering
-data <- data_raw[-c(1:2),]
-data <- data %>% 
-  select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -starts_with("Recipient"), -contains("s2p"), -ExternalReference) %>% 
+data <- data_raw %>% 
+  select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -starts_with("Recipient"), -contains("s2p")) %>% 
   filter(Progress == "100", Status == "IP Address", code_s1 != "999999")
 
-#### Prepare data for analysis - create columns etc.
 
+
+#### Prepare data for analysis - create columns etc.
 # temp1: data with Q1 gathered (Q1: did you see this object/background?)
-temp1 <- data %>% select(-contains("s2_q2")) %>% gather(item, s2_q1, contains("s2_q1")) %>% mutate(item = substr(item, 1, str_length(item)-3))
+temp1 <- data %>% 
+  select(-contains("s2_q2")) %>% 
+  gather(item, s2_q1, contains("s2_q1")) %>% 
+  mutate(item = substr(item, 1, str_length(item)-3))
 # temp2: data with Q2 gathered (Q2: Is this object/background identical to what you saw in session 1?)
-temp2 <- data %>% select(ResponseId, contains("s2_q2")) %>% gather(item, s2_q2, contains("s2_q2"))%>% mutate(item = substr(item, 1, str_length(item)-3))
+temp2 <- data %>% 
+  select(ResponseId, contains("s2_q2")) %>% 
+  gather(item, s2_q2, contains("s2_q2"))%>% 
+  mutate(item = substr(item, 1, str_length(item)-3))
 # merge Q1 and Q2
 data <- merge(temp1, temp2,by=c("ResponseId","item"))
 # create an "s2 answer" variable (same, similar, new)
 data <-  data %>%
-  mutate(s2_answer = ifelse(s2_q1 == "No", "new", ifelse(s2_q2 == "Yes", "same", ifelse(s2_q2 == "No", "similar", "error"))))
+  mutate(s2_answer = ifelse(s2_q1 == "No", "new", 
+                            ifelse(s2_q2 == "Yes", "same", 
+                                   ifelse(s2_q2 == "No", "similar", "error"))))
 # create item_number and rearrange the dataframe
-data <- data %>% mutate(item_number = as.numeric(str_sub(item, 1, str_length(item)-3))) %>%
-  arrange(ResponseId, item_number) 
-
+data <- data %>% 
+  mutate(item_number = as.numeric(str_sub(item, 1, str_length(item)-3))) %>%
+  arrange(ResponseId, item_number)
 
 # categorize participants into sleep-condition and wake-condition
-data <- data %>% mutate(time = ymd_hms(StartDate), condition = ifelse(hour(time)< 12, "sleep", "wake"))
+data <- data %>% 
+  mutate(time = mdy_hm(StartDate), condition = ifelse(hour(time)< 12, "sleep", "wake"))
+
+
 
 # create item list
 item_list = data.frame(item_number = c(1:192))
 # the counterbalancing list
-A <- c(1:8)
-B <- c(9:16)
-C <- c(17:24)
-D <- c(25:32)
-E <- c(33:40)
-F <- c(41:48)
-G <- c(49:56)
-H <- c(55:64)
+  ntr1bgd1 = c(1:8) # version 1 of neutral and version 1 of background
+  ntr2bgd1 = c(9:16) # version 2 of neutral and version 1 of background
+  neg1bgd1 = c(17:24)
+  neg2bgd1 = c(25:32)
+  ntr1bgd2 = c(33:40)
+  ntr2bgd2 = c(41:48)
+  neg1bgd2 = c(49:56)
+  neg2bgd2 = c(55:64)
+  new_bgd = c(161:192)
 # create component (object or background)
-item_list <- item_list %>% mutate(component = ifelse(item_number %in% c(1:64, 129:160), "object", "background"))
+item_list <- item_list %>% mutate(component = ifelse(item_number %in% c(1:64, 129:160),
+                                                     "object", "background"))
 # create valence (neutral or negative)
 item_list <- item_list %>% 
-  mutate(valence = ifelse(item_number %in% c(A, B, E, F,  #object
-                                             A+64, B+64, E+64, F+64, #background
-                                             A+128+16, B+128+16, 161:192), #new items
+  mutate(valence = ifelse(item_number %in% 
+                            c(ntr1bgd1, ntr2bgd1, ntr1bgd2, ntr2bgd2,  #object
+                              ntr1bgd1+64, ntr2bgd1+64, ntr1bgd2+64, ntr2bgd2+64, #background
+                              ntr1bgd1+128+16, ntr2bgd1+128+16, new_bgd), #new items
                                             "neutral", "negative"))
 # create item type (same, similar, or new)
-item_list <- item_list %>% mutate(type = ifelse(item_number %in% c(A, C, E, G, A+64, B+64, C+64, D+64), "same", ifelse(item_number %in% 129:192, "new", "similar") ))
+item_list <- item_list %>% 
+  mutate(type = ifelse(item_number %in% c(ntr1bgd1, neg1bgd1, ntr1bgd2, neg1bgd2, 
+                                          ntr1bgd1+64, ntr2bgd1+64, neg1bgd1+64, neg2bgd1+64),"same", 
+                       ifelse(item_number %in% 129:192, "new", "similar") ))
+
 
 # merge the item list to the data frame
-data <-  merge(data, item_list, by = "item_number") 
+data_joined <-  left_join(data, item_list, by = "item_number") 
 # rearrange
-data <- data %>% arrange(ResponseId, item_number) 
+data_joined <- data_joined %>% arrange(ResponseId, item_number) 
 
 ## summerize into individual-wise data
-data <- data %>% 
-  filter(type == "same") %>% 
+data_ind <- data_joined %>% 
+  filter(type == "same") %>%  #only "same" trials were processed, one participant has 64 trials
   group_by(ResponseId, condition, component, valence, s2_answer) %>% 
-  mutate(count_ans = n()) #the number of all answers (same, similar, new)
-data <- data %>% 
+  mutate(count_ans = n()) #the number of all answers separately (same, similar, new)
+data_ind <- data_ind %>% 
   filter(type == "same") %>% 
   group_by(ResponseId, condition, component, valence) %>% 
   mutate(count_all = n()) #the number of questions
 # collapse to individual level
-data_ind <- data %>% 
+data_ind <- data_ind %>% 
   group_by(ResponseId, condition, component, valence, s2_answer) %>% 
   summarise(count_ans = mean(count_ans, na.rm = T),count_all = mean(count_all, na.rm = T)) %>% 
   filter(!is.na(s2_answer)) %>% #s2_answer has to have a value
   spread(s2_answer, count_ans) #spread s2_answer
 
-data_ind[is.na(data_ind)] <-  0 #replace na with 0
+#replace na with 0
+data_ind[is.na(data_ind)] <-  0 
+#calculate specific and general recognition rate
 data_ind <-  data_ind %>% 
   mutate(specific_recog = same/count_all, #specific recognition
          general_recog = similar/(count_all-same)) #general recognition
-
 ```
 
 ### Confirmatory analysis
 ```{r}
 ##  test on the 3-way interaction
 mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (1 | ResponseId), data_ind)
-summary(mod0)
 mod1 <- lmer(general_recog ~ condition*component*valence + (1 | ResponseId), data_ind)
-summary(mod1)
 anova(mod0, mod1)
 
+```
+
+```{r}
+#Erin suggested analysis
+m <- lm(general_recog ~ condition*component*valence, data_ind)
+anova(m)
+```
+
+
+```{r}
 ## test on the key 2-way interaction on object
 mod2 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-summary(mod2)
 mod3 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-summary(mod3)
 anova(mod2, mod3)
+```
 
+
+```{r}
 ## test on the 2-way interaction on background
 mod4 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "background"))
-summary(mod4)
 mod5 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "background"))
-summary(mod5)
 anova(mod4, mod5)
-
-# summarize data for plotting
-data_summary <- data_ind %>% 
-  group_by(condition, component,valence) %>% 
-  summarise(specific_recog = mean(specific_recog, na.rm = T), 
-            #sd_spe_recog = sd(specific_recog, na.rm = TRUE), # why NA???
-            #se_spe_recog = sd_spe_recog/sqrt(n()), 
-            #ci_spe_recog =  qt(0.975,df=length(specific_recog)-1)*se_spe_recog,
-            general_recog = mean(general_recog, na.rm = T), 
-            #sd_gen_recog = sd(general_recog, na.rm = TRUE), 
-            #se_gen_recog = sd_gen_recog/sqrt(n()), 
-            #ci_gen_recog =  qt(0.975,df=length(general_recog)-1)*se_gen_recog,
-            count = n())
-
-
-# plot general recognition of object
-ggplot(data_summary %>% filter(component=="object"), aes(x = condition, y = general_recog, fill = valence))+
-  geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
-  labs(title = "general recognition of object")+
-  scale_fill_brewer(palette = "Dark2")+ ggthemes::theme_few()
-
-
 ```
+
 
 
 A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA on general recognition revleaed a 3-way condition by valence by scene component interaction, ...... As planned, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the recognition of objects showed a condition by valence interaction, ...... And a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the recognition of backgrounds showed no interaction effect, ......
@@ -241,16 +250,51 @@ A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene compone
 ```{r}
 ## test on the 2-way interaction on specific recognition of object
 mod6 <- lmer(specific_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-summary(mod6)
 mod7 <- lmer(specific_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-summary(mod7)
 anova(mod6, mod7)
 
-# plot specific recognition of object
-ggplot(data_summary %>% filter(component=="object"), aes(x = condition, y = specific_recog, fill = valence))+
-  geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5)+ 
-  labs(title = "specific recognition of object")+
-  scale_fill_brewer(palette = "Dark2")+ggthemes::theme_few()
+```
+
+### Data plots
+```{r}
+# summarize data for plotting
+data_summary <- data_ind %>% 
+  group_by(condition, component,valence) %>% 
+  summarise(specific_recog = mean(specific_recog, na.rm = T), 
+            sd_spe_recog = sd(specific_recog, na.rm = TRUE), # why NA???
+            #se_spe_recog = sd_spe_recog/sqrt(n()), 
+            #ci_spe_recog =  qt(0.975,df=length(specific_recog)-1)*se_spe_recog,
+            general_recog = mean(general_recog, na.rm = T), 
+            sd_gen_recog = sd(general_recog, na.rm = TRUE), 
+            #se_gen_recog = sd_gen_recog/sqrt(n()), 
+            #ci_gen_recog =  qt(0.975,df=length(general_recog)-1)*se_gen_recog,
+            count = n())
+# order the level of condition
+data_summary$condition <- factor(data_summary$condition, levels=c('wake', 'sleep'), ordered=TRUE)
+data_summary$component <- factor(data_summary$component, levels=c('object', 'background'), ordered=TRUE)
+
+head(data_summary)
+
+# this works though!
+# sd(data_ind$specific_recog)
+```
+
+```{r}
+# plot general recognition
+p1 <- ggplot(data_summary , aes(x = condition, y = general_recog, fill = component))+
+  geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
+  facet_grid(. ~ valence)+
+  labs(title = "General recognition")+
+  scale_fill_grey()+ ggthemes::theme_few()
+
+# plot specific recognition
+p2 <- ggplot(data_summary , aes(x = condition, y = specific_recog, fill = component))+
+  geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
+  facet_grid(. ~ valence)+
+  labs(title = "Specific recognition")+
+  scale_fill_grey()+ ggthemes::theme_few()
+
+plot_grid(p1, p2, ncol = 1, labels = c('A', 'B'))
 ```
 
 A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on specific recognition of objects showed that ......
