@@ -44,7 +44,7 @@ This was followed precisely.
 ###Procedure	
 "Participants studied a set of 64 scenes (32 with a neutral object and 32 with a negative object, all on neutral backgrounds) for 5 s each, and then indicated on a 7-point scale whether they would approach or move away from the scene if they encountered it in real life. This task was used to maximize encoding. The studied version of each scene (of the eight possible versions) was counterbalanced across participants.
 
-After the delay period, participants performed an unexpected, self-paced recognition task. During this task, objects and backgrounds were presented separately and one at a time. Some of these objects and backgrounds were identical to the scene components that had been studied (e.g., the same car accident), others were the alternate version of the object or background and therefore shared the same verbal label but differed in specific visual details (e.g., a similar car accident), and others were objects or backgrounds that had not been studied (new). Participants never saw both the same and the similar version of an item at test. Each object or background was presented with a question (e.g., "Did you see a monkey?"). If the answer to the question was "yes," participants pressed one button to indicate that the object or background was an exact match to a studied component ("same") or a second button to indicate that it was not an exact match ("similar"). If the answer to the question was "no," they pressed a third button.2
+After the delay period, participants performed an unexpected, self-paced recognition task. During this task, objects and backgrounds were presented separately and one at a time. Some of these objects and backgrounds were identical to the scene components that had been studied (e.g., the same car accident), others were the alternate version of the object or background and therefore shared the same verbal label but differed in specific visual details (e.g., a similar car accident), and others were objects or backgrounds that had not been studied (new). Participants never saw both the same and the similar version of an item at test. Each object or background was presented with a question (e.g., "Did you see a monkey?"). If the answer to the question was "yes," participants pressed one button to indicate that the object or background was an exact match to a studied component ("same") or a second button to indicate that it was not an exact match ("similar"). If the answer to the question was "no," they pressed a third button.
 
 The recognition task included 32 same objects (16 negative, 16 neutral), 32 similar objects (16 negative, 16 neutral), 32 new objects (16 negative, 16 neutral), 32 same backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), 32 similar backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), and 32 new backgrounds." 
 
@@ -52,11 +52,11 @@ This was followed precisely.
 
 ###Analysis Plan
 
-"We scored a response as specific recognition of visual details when a subject correctly responded "same" to a *same* item, but as general recognition without specific details when a subject responded "similar" to a *same* item. Because "similar" responses were constrained by the number of "same" responses (i.e., subjects responded "similar" only when they did not remember the visual details), we computed the general recognition score as the proportion of "similar" responses after exclusion of "same" responses (similar/[1- same])." "Specific and general recognition scores were computed separately for central objects (negative or neutral) and for the peripheral neutral backgrounds (studied with either a negative or a neutral object). " 
+"We scored a response as specific recognition of visual details when a subject correctly responded "same" to a *same* item, but as general recognition without specific details when a subject responded "similar" to a *same* item. Because "similar" responses were constrained by the number of "same" responses (i.e., subjects responded "similar" only when they did not remember the visual details), we computed the general recognition score as the proportion of "similar" responses after exclusion of "same" responses (similar/[1- same])." "Specific and general recognition scores were computed separately for central objects (negative or neutral) and for the peripheral neutral backgrounds (studied with either a negative or a neutral object)." 
 
 To replicate the results, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA was applied on general recognition. And planned follow-up 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA were applied on the recognition of objects and backgrounds separately.
 
-**Clarify key analysis of interest here** The key analysis in this replication is the 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the general recognition of objects.
+**Clarify key analysis of interest here** The key analysis in this replication is the 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the general recognition of objects. The replication target is the 2 (condition: sleep, wake) × 2 (valence: negative, neutral) interaction, *F*(1, 46) = 11.5, *p* = .001, $\eta^2_{p}$ = .20.
 
 ###Differences from Original Study
 
@@ -85,7 +85,7 @@ Participation time in both sessions will be checked first. Participants who did 
 
 Ratings of approach-withdraw towards 64 picture stimuli in session 1 will be gathered into a long form with a label of either neutral scene or negative scene. Ratings of neutral scenes and negative scenes will be compared as a manipulation check (participants are expected to have higher withdraw ratings towards negative scenes than neutral scenes).
 
-In session 2, participants give a response as "yes" or "no" to each stimulus, and for "yes" responses they further indicate whether it is "same" or "similar". Data will be gathered into a long form so that one trial is in a row and a "response" variable will be created. The value of "response" will be determined as "same", "similar", or "new" by incorporating information from the raw responses. Labels of "component" (object or background), "valence" (neutral or negative), and "stimulus_type" (same, similar or new) will be specified for each trial. A "specific recognition"" score will be calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score will be calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant.
+In session 2, participants give a response as "same", "similar", or "new" to each stimulus. Data will be gathered into a long form so that one trial is in a row and a "response" variable will be created. Labels of "component" (object or background), "valence" (neutral or negative), and "stimulus_type" (same, similar or new) will be specified for each trial. A "specific recognition" score will be calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score will be calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant.
 	
 ```{r include = F}
 ###Data Preparation
@@ -98,6 +98,7 @@ library(ggplot2)
 library(cowplot)
 library(stringr)
 library(lubridate)# date and time
+library(ez) # for repeated-measure ANOVA
 library(lme4)
 library(lmerTest) #optional: show p-value in lmer summary
 
@@ -159,7 +160,7 @@ item_list = data.frame(item_number = c(1:192))
   ntr1bgd2 = c(33:40)
   ntr2bgd2 = c(41:48)
   neg1bgd2 = c(49:56)
-  neg2bgd2 = c(55:64)
+  neg2bgd2 = c(57:64) 
   new_bgd = c(161:192)
 # create component (object or background)
 item_list <- item_list %>% mutate(component = ifelse(item_number %in% c(1:64, 129:160),
@@ -195,7 +196,8 @@ data_ind <- data_ind %>%
 # collapse to individual level
 data_ind <- data_ind %>% 
   group_by(ResponseId, condition, component, valence, s2_answer) %>% 
-  summarise(count_ans = mean(count_ans, na.rm = T),count_all = mean(count_all, na.rm = T)) %>% 
+  summarise(count_ans = mean(count_ans, na.rm = T),
+            count_all = mean(count_all, na.rm = T)) %>% 
   filter(!is.na(s2_answer)) %>% #s2_answer has to have a value
   spread(s2_answer, count_ans) #spread s2_answer
 
@@ -205,37 +207,70 @@ data_ind[is.na(data_ind)] <-  0
 data_ind <-  data_ind %>% 
   mutate(specific_recog = same/count_all, #specific recognition
          general_recog = similar/(count_all-same)) #general recognition
+
+# order the level of condition
+data_ind$condition <- factor(data_ind$condition, levels=c('wake', 'sleep'), ordered=TRUE)
+data_ind$component <- factor(data_ind$component, levels=c('object', 'background'), ordered=TRUE)
 ```
 
 ### Confirmatory analysis
 ```{r}
-##  test on the 3-way interaction
-mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (1 | ResponseId), data_ind)
-mod1 <- lmer(general_recog ~ condition*component*valence + (1 | ResponseId), data_ind)
-anova(mod0, mod1)
+## 3-way anova: test on the 3-way interaction
+anova_3way = ezANOVA(
+    data = data_ind,
+    dv = .(general_recog),
+    wid = .(ResponseId), 
+    within = .(component, valence),
+    between = .(condition)
+)
+#Show the ANOVA & assumption tests.
+print(anova_3way)
+
+
+# linear mixed effect models
+# mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (component*valence | ResponseId), data_ind)
+# mod1 <- lmer(general_recog ~ condition*component*valence + (component*valence | ResponseId), data_ind)
+# anova(mod0, mod1)
 
 ```
 
+
+
 ```{r}
-#Erin suggested analysis
-m <- lm(general_recog ~ condition*component*valence, data_ind)
-anova(m)
+## 2-way anova: test on the key 2-way interaction on object recognition
+anova_2way_obj = ezANOVA(
+    data = data_ind %>% filter(component == "object"),
+    dv = .(general_recog),
+    wid = .(ResponseId), 
+    within = .(valence),
+    between = .(condition)
+)
+print(anova_2way_obj)
+
+
+# linear mixed effect models
+# mod2 <- lmer(general_recog ~ condition + valence + (valence | ResponseId), data_ind %>% filter(component == "object"))
+# mod3 <- lmer(general_recog ~ condition*valence + (valence | ResponseId), data_ind %>% filter(component == "object"))
+# anova(mod2, mod3)
 ```
 
 
 ```{r}
-## test on the key 2-way interaction on object
-mod2 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-mod3 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-anova(mod2, mod3)
-```
+## 2-way anova: test on the 2-way interaction on background
+anova_2way_bgd = ezANOVA(
+    data = data_ind %>% filter(component == "background"),
+    dv = .(general_recog),
+    wid = .(ResponseId), 
+    within = .(valence),
+    between = .(condition)
+)
+print(anova_2way_bgd)
 
 
-```{r}
-## test on the 2-way interaction on background
-mod4 <- lmer(general_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "background"))
-mod5 <- lmer(general_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "background"))
-anova(mod4, mod5)
+# linear mixed effect mdoels
+# mod4 <- lmer(general_recog ~ condition + valence + (valence | ResponseId), data_ind %>% filter(component == "background"))
+# mod5 <- lmer(general_recog ~ condition*valence + (valence | ResponseId), data_ind %>% filter(component == "background"))
+# anova(mod4, mod5)
 ```
 
 
@@ -249,11 +284,22 @@ A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene compone
 ###Exploratory analyses
 ```{r}
 ## test on the 2-way interaction on specific recognition of object
-mod6 <- lmer(specific_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-mod7 <- lmer(specific_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-anova(mod6, mod7)
+anova_2way_spe_recog = ezANOVA(
+    data = data_ind %>% filter(component == "object"),
+    dv = .(specific_recog),
+    wid = .(ResponseId), 
+    within = .(valence),
+    between = .(condition)
+)
+print(anova_2way_spe_recog)
+
+
+# mod6 <- lmer(specific_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+# mod7 <- lmer(specific_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+# anova(mod6, mod7)
 
 ```
+A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on specific recognition of objects showed that ......
 
 ### Data plots
 ```{r}
@@ -270,8 +316,8 @@ data_summary <- data_ind %>%
             ci_gen_recog =  1.96*se_gen_recog, # qt(0.975,df=length(general_recog)-1)
             count = n())
 # order the level of condition
-data_summary$condition <- factor(data_summary$condition, levels=c('wake', 'sleep'), ordered=TRUE)
-data_summary$component <- factor(data_summary$component, levels=c('object', 'background'), ordered=TRUE)
+# data_summary$condition <- factor(data_summary$condition, levels=c('wake', 'sleep'), ordered=TRUE)
+# data_summary$component <- factor(data_summary$component, levels=c('object', 'background'), ordered=TRUE)
 
 head(data_summary)
 ```
@@ -281,6 +327,7 @@ head(data_summary)
 p1 <- ggplot(data_summary , aes(x = condition, y = mean_gen_recog, fill = component))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
   geom_errorbar(aes(ymin=mean_gen_recog - ci_gen_recog, ymax=mean_gen_recog + ci_gen_recog), position=position_dodge(.5), width=.2, size=1) +
+  #geom_point(data = data_ind, aes(x = condition, y = general_recog, fill = component), position=position_dodge(.5), color = "darkred", alpha = .5)+
   facet_grid(. ~ valence)+
   labs(title = "General recognition")+
   scale_fill_grey()+ ggthemes::theme_few()
@@ -296,9 +343,7 @@ p2 <- ggplot(data_summary , aes(x = condition, y = mean_spe_recog, fill = compon
 plot_grid(p1, p2, ncol = 1, labels = c('A', 'B'))
 ```
 
-A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on specific recognition of objects showed that ......
 
-(Any follow-up analyses desired (not required).) 
 
 ## Discussion
 
