@@ -116,7 +116,7 @@ data_raw <- rbind(data_raw_wake,data_raw_sleep)
 
 #### Data exclusion / filtering
 data <- data_raw %>% 
-  select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -starts_with("Recipient"), -contains("s2p")) %>% 
+  select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -contains("Q42"), -contains("Q43"), -starts_with("Recipient"), -contains("s2p")) %>% 
   filter(Progress == "100", Status == "IP Address", code_s1 != "999999")
 
 
@@ -149,36 +149,8 @@ data <- data %>%
   mutate(time = mdy_hm(StartDate), condition = ifelse(hour(time)< 12, "sleep", "wake"))
 
 
-
-# create item list
-item_list = data.frame(item_number = c(1:192))
-# the counterbalancing list
-  ntr1bgd1 = c(1:8) # version 1 of neutral and version 1 of background
-  ntr2bgd1 = c(9:16) # version 2 of neutral and version 1 of background
-  neg1bgd1 = c(17:24)
-  neg2bgd1 = c(25:32)
-  ntr1bgd2 = c(33:40)
-  ntr2bgd2 = c(41:48)
-  neg1bgd2 = c(49:56)
-  neg2bgd2 = c(57:64) 
-  new_bgd = c(161:192)
-# create component (object or background)
-item_list <- item_list %>% mutate(component = ifelse(item_number %in% c(1:64, 129:160),
-                                                     "object", "background"))
-# create valence (neutral or negative)
-item_list <- item_list %>% 
-  mutate(valence = ifelse(item_number %in% 
-                            c(ntr1bgd1, ntr2bgd1, ntr1bgd2, ntr2bgd2,  #object
-                              ntr1bgd1+64, ntr2bgd1+64, ntr1bgd2+64, ntr2bgd2+64, #background
-                              ntr1bgd1+128+16, ntr2bgd1+128+16, new_bgd), #new items
-                                            "neutral", "negative"))
-# create item type (same, similar, or new)
-item_list <- item_list %>% 
-  mutate(type = ifelse(item_number %in% c(ntr1bgd1, neg1bgd1, ntr1bgd2, neg1bgd2, 
-                                          ntr1bgd1+64, ntr2bgd1+64, neg1bgd1+64, neg2bgd1+64),"same", 
-                       ifelse(item_number %in% 129:192, "new", "similar") ))
-
-
+# read the stimuli list
+item_list <- read_csv('stimuli list/questions_list.csv')
 # merge the item list to the data frame
 data_joined <-  left_join(data, item_list, by = "item_number") 
 # rearrange
