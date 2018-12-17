@@ -42,13 +42,13 @@ This was followed precisely.
 ![**Fig. 1.** "Examples of the scenes presented to subjects. Eight versions of each scene were created by combining each of four similar objects (two neutral objects, two negative and arousing emotional objects) with each of two plausible neutral backgrounds. In this example, the two neutral central objects are cars, and the two negative central objects are cars damaged in an accident; the neutral backgrounds are street scenes. Two of the eight versions of the completed scene are shown."](http://journals.sagepub.com/na101/home/literatum/publisher/sage/journals/content/pssa/2008/pssa_19_8/j.1467-9280.2008.02157.x/20160829/images/medium/10.1111_j.1467-9280.2008.02157.x-fig1.gif)
 
 ###Procedure	
-"Participants studied a set of 64 scenes (32 with a neutral object and 32 with a negative object, all on neutral backgrounds) for 5 s each, and then indicated on a 7-point scale whether they would approach or move away from the scene if they encountered it in real life. This task was used to maximize encoding. The studied version of each scene (of the eight possible versions) was counterbalanced across participants.
+"Participants studied a set of 64 scenes (32 with a neutral object and 32 with a negative object, all on neutral backgrounds) for 5 s each, and then indicated on a 7-point scale whether they would approach or move away from the scene if they encountered it in real life. This task was used to maximize encoding.
 
 After the delay period, participants performed an unexpected, self-paced recognition task. During this task, objects and backgrounds were presented separately and one at a time. Some of these objects and backgrounds were identical to the scene components that had been studied (e.g., the same car accident), others were the alternate version of the object or background and therefore shared the same verbal label but differed in specific visual details (e.g., a similar car accident), and others were objects or backgrounds that had not been studied (new). Participants never saw both the same and the similar version of an item at test. Each object or background was presented with a question (e.g., "Did you see a monkey?"). If the answer to the question was "yes," participants pressed one button to indicate that the object or background was an exact match to a studied component ("same") or a second button to indicate that it was not an exact match ("similar"). If the answer to the question was "no," they pressed a third button.
 
 The recognition task included 32 same objects (16 negative, 16 neutral), 32 similar objects (16 negative, 16 neutral), 32 new objects (16 negative, 16 neutral), 32 same backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), 32 similar backgrounds (16 previously shown with a negative object, 16 previously shown with a neutral object), and 32 new backgrounds." 
 
-This was followed precisely.
+This was followed precisely. For the current purpose, the experiment sessions before and after the delay period were referred as Session 1 and Session 2 respectively.
 
 ###Analysis Plan
 
@@ -60,7 +60,7 @@ To replicate the results, a 2 (condition: sleep, wake) × 2 (valence: negative, n
 
 ###Differences from Original Study
 
-This replication project differs from the original study in two major ways. First, the original experiments were run in a laboratory while the current replication experiments were run online. Second, participants in the original study were college students while participants in the current replication study were workers on Amazon Mechanical Turk. These differences were not anticipated to make a difference based on the claim in the original paper that "memory for a negative scene develops differentially across time delays containing sleep and wake, with sleep selectively consolidating those aspects of memory that are of greatest value to the organism."
+This replication project differs from the original study in three major ways. First, the original experiments were run in a laboratory while the current replication experiments were run online. Second, participants in the original study were college students while participants in the current replication study were workers on Amazon Mechanical Turk (MTurk). Third, participants in the original study were randomly assigned to a condition (sleep or wake) whereas participants in the current replication self-assigned themselves to a condition in the online experiment. These differences were not anticipated to make a difference based on the claim in the original paper that "memory for a negative scene develops differentially across time delays containing sleep and wake, with sleep selectively consolidating those aspects of memory that are of greatest value to the organism."
 
 <!-- 
 
@@ -71,10 +71,12 @@ You can comment this section out prior to final report with data collection.
 -->
 
 #### Actual Sample
-  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+
+  Fourty-five participants completed Session 1, and only 25 of them finished Session 2. Two more participants were excluded because they finished Session 2 within one hour after Session 1, leaving a final sample of 23 participants (`r percent(nrow(data_s1s2 %>% filter(gender == 'Female'))/nrow(data_s1s2))` female; age: `r mean(data_s1s2$age)` \pm `r sd(data_s1s2$age)`). `r percent(nrow(data_s1s2 %>% filter(!grepl("high school", education)))/nrow(data_s1s2))` of the sample has finished or attended college education. In the final sample, 14 were in the sleep condition, and 9 were in the wake condition.
 
 #### Differences from pre-data collection methods plan
-  Any differences from what was described as the original plan, or "none".
+  
+  Due to slow data collection speed on Mturk and high dropout rate, the final sample has only 23 participants, which is smaller than the planned sample size (*n* = 48).
 
 
 ##Results
@@ -83,9 +85,9 @@ You can comment this section out prior to final report with data collection.
 
 Participation time in both sessions will be checked first. Participants who did the experiment out outside the study window (8-10 am and 8-10 pm) will be excluded.
 
-Ratings of approach-withdraw towards 64 picture stimuli in session 1 will be gathered into a long form with a label of either neutral scene or negative scene. Ratings of neutral scenes and negative scenes will be compared as a manipulation check (participants are expected to have higher withdraw ratings towards negative scenes than neutral scenes).
+Ratings of approach-withdraw towards 64 picture stimuli in Session 1 will be gathered into a long form with a label of either neutral scene or negative scene. Ratings of neutral scenes and negative scenes will be compared as a manipulation check (participants are expected to have higher withdraw ratings towards negative scenes than neutral scenes).
 
-In session 2, participants give a response as "same", "similar", or "new" to each stimulus. Data will be gathered into a long form so that one trial is in a row and a "response" variable will be created. Labels of "component" (object or background), "valence" (neutral or negative), and "stimulus_type" (same, similar or new) will be specified for each trial. A "specific recognition" score will be calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score will be calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant.
+In Session 2, participants give a response as "same", "similar", or "new" to each stimulus. Data will be gathered into a long form so that one trial is in a row and a "response" variable will be created. Labels of "component" (object or background), "valence" (neutral or negative), and "stimulus_type" (same, similar or new) will be specified for each trial. A "specific recognition" score will be calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score will be calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant.
 	
 ```{r include = F}
 ###Data Preparation
@@ -101,52 +103,68 @@ library(lubridate)# date and time
 library(ez) # for repeated-measure ANOVA
 library(lme4)
 library(lmerTest) #optional: show p-value in lmer summary
+library(scales) # print percentage
 
 setwd("C:/Users/tepzh/Dropbox/Stanford/PSYCH251 experimental methods/replication project/payne2008")
 ```
 
 ```{r }
 ####Import data
+#session 1 data
+data_s1 <- readSurvey("data/PSYCH251+Session+1.csv")
 #wake group data
-data_raw_wake <- readSurvey("data/PSYCH251+Session+2_sleep.csv")
+data_s2_wake <- readSurvey("data/PSYCH251+Session+2_sleep.csv")
 #sleep group data
-data_raw_sleep <- readSurvey("data/PSYCH251+Session+2_wake.csv")
+data_s2_sleep <- readSurvey("data/PSYCH251+Session+2_wake.csv")
 #combine the two raw datasets
-data_raw <- rbind(data_raw_wake,data_raw_sleep)
+data_s2 <- rbind(data_s2_wake,data_s2_sleep)
 
 #### Data exclusion / filtering
-data <- data_raw %>% 
-  select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -contains("Q42"), -contains("Q43"), -starts_with("Recipient"), -contains("s2p")) %>% 
-  filter(Progress == "100", Status == "IP Address", code_s1 != "999999")
+# clean s1 data
+data_s1_clean <- data_s1 %>% 
+  select(-contains("Q34"), -contains("Q35"), -contains("Q19"), -contains("Q24"), -contains("prac")) %>% 
+  filter(!is.na(am_or_pm))  
+# final data collection started on 2018/12/12
+data_s1_clean <- data_s1_clean[mdy_hm(data_s1_clean$StartDate) >= ymd("2018-12-12"),]
+# mark S1 variable names
+names(data_s1_clean) <- str_c("s1_", names(data_s1_clean))
 
+# clean s2 data
+data_s2_clean <- data_s2 %>% 
+  select(-contains("Q34"), -contains("Q35"), -contains("Q31"), -contains("Q42"), -contains("Q43"), -starts_with("Recipient"), -contains("s2p")) %>% 
+  filter(!is.na("sleep_log#4_1"), 
+         code_s1 != "999999", code_s1 != "99999", code_s1 != "888888")
+# final data collection started on 2018/12/12
+data_s2_clean <- data_s2_clean[mdy_hm(data_s2_clean$StartDate) >= ymd("2018-12-12"),]
+# categorize participants into sleep-condition and wake-condition
+data_s2_clean <- data_s2_clean %>% 
+  mutate(time = mdy_hm(StartDate), condition = ifelse(hour(time) >= 5 & hour(time) <= 14, "sleep", "wake")) # considering time difference, the sleep group (across the US) starts Session 2 between 5 am and 2 pm 
+
+# join s1 and s2 data
+data_s1s2 <- left_join(data_s2_clean, data_s1_clean, by = c("code_s1" = "s1_code"))
+# calculate the s1-s2 time gap
+data_s1s2 <- data_s1s2 %>% 
+  mutate(time_gap = as.numeric(mdy_hm(StartDate) - mdy_hm(s1_StartDate), units = "hours") ) # time gap in hours
+# filter out participants who did not have S1 and S2 about 12 hours apart
+data_s1s2 <- data_s1s2 %>% 
+  filter(time_gap >10 & time_gap  < 14)
+# distribution of S2 time of the day
+# hist(hour(data_joined$time), breaks = 24, main = "Distribution of Session 2 start time")
+# check the condition assignment (is it consistent with reported am_or_pm during Session 1)
+table(data_s1s2$condition, data_s1s2$s1_am_or_pm)
 
 
 #### Prepare data for analysis - create columns etc.
 # temp1: data with Q1 gathered (Q1: did you see this object/background?)
-temp1 <- data %>% 
-  select(-contains("s2_q2")) %>% 
+data <- data_s1s2 %>% 
   gather(item, s2_q1, contains("s2_q1")) %>% 
   mutate(item = substr(item, 1, str_length(item)-3))
-# temp2: data with Q2 gathered (Q2: Is this object/background identical to what you saw in session 1?)
-temp2 <- data %>% 
-  select(ResponseId, contains("s2_q2")) %>% 
-  gather(item, s2_q2, contains("s2_q2"))%>% 
-  mutate(item = substr(item, 1, str_length(item)-3))
-# merge Q1 and Q2
-data <- merge(temp1, temp2,by=c("ResponseId","item"))
-# create an "s2 answer" variable (same, similar, new)
-data <-  data %>%
-  mutate(s2_answer = ifelse(s2_q1 == "No", "new", 
-                            ifelse(s2_q2 == "Yes", "same", 
-                                   ifelse(s2_q2 == "No", "similar", "error"))))
+
 # create item_number and rearrange the dataframe
 data <- data %>% 
   mutate(item_number = as.numeric(str_sub(item, 1, str_length(item)-3))) %>%
-  arrange(ResponseId, item_number)
+  arrange(code_s1, item_number)
 
-# categorize participants into sleep-condition and wake-condition
-data <- data %>% 
-  mutate(time = mdy_hm(StartDate), condition = ifelse(hour(time)< 12, "sleep", "wake"))
 
 
 # read the stimuli list
@@ -154,31 +172,31 @@ item_list <- read_csv('stimuli list/questions_list.csv')
 # merge the item list to the data frame
 data_joined <-  left_join(data, item_list, by = "item_number") 
 # rearrange
-data_joined <- data_joined %>% arrange(ResponseId, item_number) 
+data_joined <- data_joined %>% arrange(code_s1, item_number) 
 
 ## summerize into individual-wise data
 data_ind <- data_joined %>% 
   filter(type == "same") %>%  #only "same" trials were processed, one participant has 64 trials
-  group_by(ResponseId, condition, component, valence, s2_answer) %>% 
+  group_by(code_s1, condition, component, valence, s2_q1) %>% 
   mutate(count_ans = n()) #the number of all answers separately (same, similar, new)
 data_ind <- data_ind %>% 
   filter(type == "same") %>% 
-  group_by(ResponseId, condition, component, valence) %>% 
+  group_by(code_s1, condition, component, valence) %>% 
   mutate(count_all = n()) #the number of questions
 # collapse to individual level
 data_ind <- data_ind %>% 
-  group_by(ResponseId, condition, component, valence, s2_answer) %>% 
+  group_by(code_s1, condition, component, valence, s2_q1) %>% 
   summarise(count_ans = mean(count_ans, na.rm = T),
             count_all = mean(count_all, na.rm = T)) %>% 
-  filter(!is.na(s2_answer)) %>% #s2_answer has to have a value
-  spread(s2_answer, count_ans) #spread s2_answer
+  #filter(!is.na(s2_q1)) %>% #s2_q1 has to have a value
+  spread(s2_q1, count_ans) #spread s2_q1
 
 #replace na with 0
 data_ind[is.na(data_ind)] <-  0 
 #calculate specific and general recognition rate
 data_ind <-  data_ind %>% 
-  mutate(specific_recog = same/count_all, #specific recognition
-         general_recog = similar/(count_all-same)) #general recognition
+  mutate(specific_recog = Identical/count_all, #specific recognition
+         general_recog = Similar/(count_all-Identical)) #general recognition
 
 # order the level of condition
 data_ind$condition <- factor(data_ind$condition, levels=c('wake', 'sleep'), ordered=TRUE)
@@ -191,7 +209,7 @@ data_ind$component <- factor(data_ind$component, levels=c('object', 'background'
 anova_3way = ezANOVA(
     data = data_ind,
     dv = .(general_recog),
-    wid = .(ResponseId), 
+    wid = .(code_s1), 
     within = .(component, valence),
     between = .(condition)
 )
@@ -200,8 +218,8 @@ print(anova_3way)
 
 
 # linear mixed effect models
-# mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (component*valence | ResponseId), data_ind)
-# mod1 <- lmer(general_recog ~ condition*component*valence + (component*valence | ResponseId), data_ind)
+# mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (component*valence | code_s1), data_ind)
+# mod1 <- lmer(general_recog ~ condition*component*valence + (component*valence | code_s1), data_ind)
 # anova(mod0, mod1)
 
 ```
@@ -213,7 +231,7 @@ print(anova_3way)
 anova_2way_obj = ezANOVA(
     data = data_ind %>% filter(component == "object"),
     dv = .(general_recog),
-    wid = .(ResponseId), 
+    wid = .(code_s1), 
     within = .(valence),
     between = .(condition)
 )
@@ -221,8 +239,8 @@ print(anova_2way_obj)
 
 
 # linear mixed effect models
-# mod2 <- lmer(general_recog ~ condition + valence + (valence | ResponseId), data_ind %>% filter(component == "object"))
-# mod3 <- lmer(general_recog ~ condition*valence + (valence | ResponseId), data_ind %>% filter(component == "object"))
+# mod2 <- lmer(general_recog ~ condition + valence + (valence | code_s1), data_ind %>% filter(component == "object"))
+# mod3 <- lmer(general_recog ~ condition*valence + (valence | code_s1), data_ind %>% filter(component == "object"))
 # anova(mod2, mod3)
 ```
 
@@ -232,7 +250,7 @@ print(anova_2way_obj)
 anova_2way_bgd = ezANOVA(
     data = data_ind %>% filter(component == "background"),
     dv = .(general_recog),
-    wid = .(ResponseId), 
+    wid = .(code_s1), 
     within = .(valence),
     between = .(condition)
 )
@@ -240,8 +258,8 @@ print(anova_2way_bgd)
 
 
 # linear mixed effect mdoels
-# mod4 <- lmer(general_recog ~ condition + valence + (valence | ResponseId), data_ind %>% filter(component == "background"))
-# mod5 <- lmer(general_recog ~ condition*valence + (valence | ResponseId), data_ind %>% filter(component == "background"))
+# mod4 <- lmer(general_recog ~ condition + valence + (valence | code_s1), data_ind %>% filter(component == "background"))
+# mod5 <- lmer(general_recog ~ condition*valence + (valence | code_s1), data_ind %>% filter(component == "background"))
 # anova(mod4, mod5)
 ```
 
@@ -259,15 +277,15 @@ A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene compone
 anova_2way_spe_recog = ezANOVA(
     data = data_ind %>% filter(component == "object"),
     dv = .(specific_recog),
-    wid = .(ResponseId), 
+    wid = .(code_s1), 
     within = .(valence),
     between = .(condition)
 )
 print(anova_2way_spe_recog)
 
 
-# mod6 <- lmer(specific_recog ~ condition + valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
-# mod7 <- lmer(specific_recog ~ condition*valence + (1 | ResponseId), data_ind %>% filter(component == "object"))
+# mod6 <- lmer(specific_recog ~ condition + valence + (1 | code_s1), data_ind %>% filter(component == "object"))
+# mod7 <- lmer(specific_recog ~ condition*valence + (1 | code_s1), data_ind %>% filter(component == "object"))
 # anova(mod6, mod7)
 
 ```
