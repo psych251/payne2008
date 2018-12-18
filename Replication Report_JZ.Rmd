@@ -284,7 +284,7 @@ kable(head(data_summary, 8), digits = 2)
 ```
 
 The results of general recognition of the two groups (wake and sleep) is in the subplot A blow.
-```{r}
+```{r }
 # plot general recognition
 p1 <- ggplot(data_summary , aes(x = condition, y = mean_gen_recog, fill = component))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
@@ -347,7 +347,7 @@ The current study has a small sameple size (sleep condition: *n* = 14; wake cond
 
 It should also be noted that the variance of the general recognition is also very large in both sleep conditions (see plots below). There are individuals who got 0 general recognition rate, and there are also individuals who got more than 80% general recognition rate. The large individual differences in the task performance (noise) made it more difficult to understand of the effect of interest.
 
-```{r}
+```{r echo= F}
 ggplot(data_summary , aes(x = condition, y = mean_gen_recog, fill = component))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
   geom_errorbar(aes(ymin=mean_gen_recog - ci_gen_recog, ymax=mean_gen_recog + ci_gen_recog), position=position_dodge(.5), width=.2, size=1) +
