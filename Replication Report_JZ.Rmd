@@ -11,7 +11,7 @@ output:
 ---
   
 *Links to*
-[my repo](https://github.com/tepzhang/payne2008), [session 1 experiment](https://stanforduniversity.qualtrics.com/jfe/form/SV_0jLDw3H3QLV7Usl), [session 2 experiment](https://stanforduniversity.qualtrics.com/jfe/form/SV_77jw7DtC0C3R1Zz), and [the original paper](https://github.com/tepzhang/payne2008/blob/master/original_paper/Payne%20et%20al.%202008%20PS.pdf)
+[github repo](https://github.com/tepzhang/payne2008), [osf preregistration](https://osf.io/mj7nd/), [session 1 experiment](https://stanforduniversity.qualtrics.com/jfe/form/SV_0jLDw3H3QLV7Usl), [session 2 experiment](https://stanforduniversity.qualtrics.com/jfe/form/SV_77jw7DtC0C3R1Zz), and [the original paper](https://github.com/tepzhang/payne2008/blob/master/original_paper/Payne%20et%20al.%202008%20PS.pdf)
 
 
 <!-- R pub: http://rpubs.com/jxzhang/psych251_report  -->
@@ -72,22 +72,20 @@ You can comment this section out prior to final report with data collection.
 
 #### Actual Sample
 
-  Fourty-five participants completed Session 1, and only 25 of them finished Session 2. Two more participants were excluded because they finished Session 2 within one hour after Session 1, leaving a final sample of 23 participants (`r percent(nrow(data_s1s2 %>% filter(gender == 'Female'))/nrow(data_s1s2))` female; age: `r mean(data_s1s2$age)` \pm `r sd(data_s1s2$age)`). `r percent(nrow(data_s1s2 %>% filter(!grepl("high school", education)))/nrow(data_s1s2))` of the sample has finished or attended college education. In the final sample, 14 were in the sleep condition, and 9 were in the wake condition.
+  Fourty-five participants completed Session 1, and only 25 of them finished Session 2. Two more participants were excluded because they finished Session 2 within one hour after Session 1, leaving a final sample of 23 participants (43.5% female; age = 39.4 $\pm$ 10.9 years). 91.3% of the sample has finished or attended college education. In the final sample, 14 were in the sleep condition, and 9 were in the wake condition.
 
 #### Differences from pre-data collection methods plan
   
-  Due to slow data collection speed on Mturk and high dropout rate, the final sample has only 23 participants, which is smaller than the planned sample size (*n* = 48).
+  Due to a slow data collection speed and a high dropout rate, the final sample has only 23 participants, which is only about a half of the planned sample size (*n* = 48).
 
 
-##Results
+## Results
 
 ### Data preparation
 
-Participation time in both sessions will be checked first. Participants who did the experiment out outside the study window (8-10 am and 8-10 pm) will be excluded.
+Participation time in both sessions were checked first. Participants who did the experiment out outside the study window (8-10 am and 8-10 pm) and participants who completed Session 2 not approximately 12 hours after Session 1 (10-14 hours) were excluded.
 
-Ratings of approach-withdraw towards 64 picture stimuli in Session 1 will be gathered into a long form with a label of either neutral scene or negative scene. Ratings of neutral scenes and negative scenes will be compared as a manipulation check (participants are expected to have higher withdraw ratings towards negative scenes than neutral scenes).
-
-In Session 2, participants give a response as "same", "similar", or "new" to each stimulus. Data will be gathered into a long form so that one trial is in a row and a "response" variable will be created. Labels of "component" (object or background), "valence" (neutral or negative), and "stimulus_type" (same, similar or new) will be specified for each trial. A "specific recognition" score will be calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score will be calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant.
+In Session 2, participants gave a response as "same", "similar", or "new" to each stimulus. Data were gathered into a long form so that one trial is in a row and a "response" variable were created. Labels of "component" (object or background), "valence" (neutral or negative), and "type" (same, similar or new) were specified for each trial. Following the original study, a "specific recognition" score was calculated as the proportion of "same" responses to all "same" stimuli for each participant. A "general recognition" score was calculated as the proportion of "similar" responses to "same" stimuli after exlusion of "same" responses for each participant. In addition, an "all recognition" score was calculated as the proportion of ("same" + "similar") responses to "same" stimuli.
 	
 ```{r include = F}
 ###Data Preparation
@@ -101,9 +99,10 @@ library(cowplot)
 library(stringr)
 library(lubridate)# date and time
 library(ez) # for repeated-measure ANOVA
-library(lme4)
-library(lmerTest) #optional: show p-value in lmer summary
+#library(lme4)
+#library(lmerTest) #optional: show p-value in lmer summary
 library(scales) # print percentage
+library(knitr)
 
 setwd("C:/Users/tepzh/Dropbox/Stanford/PSYCH251 experimental methods/replication project/payne2008")
 ```
@@ -138,7 +137,7 @@ data_s2_clean <- data_s2 %>%
 data_s2_clean <- data_s2_clean[mdy_hm(data_s2_clean$StartDate) >= ymd("2018-12-12"),]
 # categorize participants into sleep-condition and wake-condition
 data_s2_clean <- data_s2_clean %>% 
-  mutate(time = mdy_hm(StartDate), condition = ifelse(hour(time) >= 5 & hour(time) <= 14, "sleep", "wake")) # considering time difference, the sleep group (across the US) starts Session 2 between 5 am and 2 pm 
+  mutate(time = mdy_hm(StartDate), condition = ifelse(hour(time) >= 5 & hour(time) <= 12, "sleep", "wake")) # considering time difference, the sleep group (across the US) starts Session 2 between 5 am and 12 pm 
 
 # join s1 and s2 data
 data_s1s2 <- left_join(data_s2_clean, data_s1_clean, by = c("code_s1" = "s1_code"))
@@ -148,12 +147,23 @@ data_s1s2 <- data_s1s2 %>%
 # filter out participants who did not have S1 and S2 about 12 hours apart
 data_s1s2 <- data_s1s2 %>% 
   filter(time_gap >10 & time_gap  < 14)
-# distribution of S2 time of the day
-# hist(hour(data_joined$time), breaks = 24, main = "Distribution of Session 2 start time")
 # check the condition assignment (is it consistent with reported am_or_pm during Session 1)
 table(data_s1s2$condition, data_s1s2$s1_am_or_pm)
 
+# distribution of S2 time of the day
+ggplot(data_s1s2, aes(x = hour(time), fill = condition))+
+  geom_histogram(color = 'black') +
+  labs(title = "Distribution of the time of Session 2 (in Pacific Time)", x = "time of the day (hour)")+
+  xlim(0, 24) + scale_y_continuous(breaks=seq(0, 10, 1))
 
+# distribition of the time gap between S1 and S2
+ggplot(data_s1s2, aes(x = time_gap))+
+  geom_histogram(color = 'black', fill = 'white') +
+  labs(title = "Distribution of time gap between Session 1 and Session 2", x = "duration (hours)")+
+  xlim(11, 14)
+```
+
+```{r}
 #### Prepare data for analysis - create columns etc.
 # temp1: data with Q1 gathered (Q1: did you see this object/background?)
 data <- data_s1s2 %>% 
@@ -166,7 +176,6 @@ data <- data %>%
   arrange(code_s1, item_number)
 
 
-
 # read the stimuli list
 item_list <- read_csv('stimuli list/questions_list.csv')
 # merge the item list to the data frame
@@ -176,16 +185,16 @@ data_joined <- data_joined %>% arrange(code_s1, item_number)
 
 ## summerize into individual-wise data
 data_ind <- data_joined %>% 
-  filter(type == "same") %>%  #only "same" trials were processed, one participant has 64 trials
-  group_by(code_s1, condition, component, valence, s2_q1) %>% 
+  # filter(type == "same") %>%  #only "same" trials were processed, one participant has 64 trials
+  group_by(code_s1, condition, type, component, valence, s2_q1) %>% 
   mutate(count_ans = n()) #the number of all answers separately (same, similar, new)
 data_ind <- data_ind %>% 
-  filter(type == "same") %>% 
-  group_by(code_s1, condition, component, valence) %>% 
+  # filter(type == "same") %>% 
+  group_by(code_s1, condition, type, component, valence) %>% 
   mutate(count_all = n()) #the number of questions
 # collapse to individual level
 data_ind <- data_ind %>% 
-  group_by(code_s1, condition, component, valence, s2_q1) %>% 
+  group_by(code_s1, condition, type, component, valence, s2_q1) %>% 
   summarise(count_ans = mean(count_ans, na.rm = T),
             count_all = mean(count_all, na.rm = T)) %>% 
   #filter(!is.na(s2_q1)) %>% #s2_q1 has to have a value
@@ -196,18 +205,22 @@ data_ind[is.na(data_ind)] <-  0
 #calculate specific and general recognition rate
 data_ind <-  data_ind %>% 
   mutate(specific_recog = Identical/count_all, #specific recognition
-         general_recog = Similar/(count_all-Identical)) #general recognition
+         general_recog = Similar/(count_all-Identical) #general recognition
+         ) 
 
 # order the level of condition
 data_ind$condition <- factor(data_ind$condition, levels=c('wake', 'sleep'), ordered=TRUE)
 data_ind$component <- factor(data_ind$component, levels=c('object', 'background'), ordered=TRUE)
+
+# show the head of the individual-wise data
+kable(head(data_ind, 11), digit = 2)
 ```
 
-### Confirmatory analysis
+###Confirmatory analysis
 ```{r}
 ## 3-way anova: test on the 3-way interaction
 anova_3way = ezANOVA(
-    data = data_ind,
+    data = data_ind %>% filter(type == "same"),
     dv = .(general_recog),
     wid = .(code_s1), 
     within = .(component, valence),
@@ -215,86 +228,40 @@ anova_3way = ezANOVA(
 )
 #Show the ANOVA & assumption tests.
 print(anova_3way)
-
-
-# linear mixed effect models
-# mod0 <- lmer(general_recog ~ condition*component+component*valence+condition*valence + (component*valence | code_s1), data_ind)
-# mod1 <- lmer(general_recog ~ condition*component*valence + (component*valence | code_s1), data_ind)
-# anova(mod0, mod1)
-
 ```
-
-
+A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA on general recognition did not show a 3-way condition by valence by scene component interaction, *F*(1, 21) = .83, *p* = .371, $\eta^2_{p}$ = .005. It only showed a component × valence interaction, *F*(1, 21) = 12.13, *p* = .002, $\eta^2_{p}$ = .063.
 
 ```{r}
 ## 2-way anova: test on the key 2-way interaction on object recognition
 anova_2way_obj = ezANOVA(
-    data = data_ind %>% filter(component == "object"),
+    data = data_ind %>% filter(type == "same", component == "object"),
     dv = .(general_recog),
     wid = .(code_s1), 
     within = .(valence),
     between = .(condition)
 )
 print(anova_2way_obj)
-
-
-# linear mixed effect models
-# mod2 <- lmer(general_recog ~ condition + valence + (valence | code_s1), data_ind %>% filter(component == "object"))
-# mod3 <- lmer(general_recog ~ condition*valence + (valence | code_s1), data_ind %>% filter(component == "object"))
-# anova(mod2, mod3)
 ```
-
+A planned 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the general recognition of objects did not showed a significant condition by valence interaction, *F*(1, 21) = 2.34, *p* = .141, $\eta^2_{p}$ = .025. There was only a marginal effect of valence, *F*(1, 21) = 3.88, *p* = .062, $\eta^2_{p}$ = .040.
 
 ```{r}
 ## 2-way anova: test on the 2-way interaction on background
 anova_2way_bgd = ezANOVA(
-    data = data_ind %>% filter(component == "background"),
+    data = data_ind %>% filter(type == "same", component == "background"),
     dv = .(general_recog),
     wid = .(code_s1), 
     within = .(valence),
     between = .(condition)
 )
 print(anova_2way_bgd)
-
-
-# linear mixed effect mdoels
-# mod4 <- lmer(general_recog ~ condition + valence + (valence | code_s1), data_ind %>% filter(component == "background"))
-# mod5 <- lmer(general_recog ~ condition*valence + (valence | code_s1), data_ind %>% filter(component == "background"))
-# anova(mod4, mod5)
 ```
+And a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the recognition of backgrounds showed no interaction effect, *F*(1, 21) = 0.95, *p* = .761, $\eta^2_{p}$ = .001. However, there was a main effect of valence, *F*(1, 21) = 12.62, *p* = .002, $\eta^2_{p}$ = .091.
 
-
-
-A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) × 2 (scene component: object, background) mixed ANOVA on general recognition revleaed a 3-way condition by valence by scene component interaction, ...... As planned, a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the recognition of objects showed a condition by valence interaction, ...... And a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on the recognition of backgrounds showed no interaction effect, ......
-
-(The analyses as specified in the analysis plan.)
-
-*Side-by-side graph with original graph is ideal here*
-
-###Exploratory analyses
-```{r}
-## test on the 2-way interaction on specific recognition of object
-anova_2way_spe_recog = ezANOVA(
-    data = data_ind %>% filter(component == "object"),
-    dv = .(specific_recog),
-    wid = .(code_s1), 
-    within = .(valence),
-    between = .(condition)
-)
-print(anova_2way_spe_recog)
-
-
-# mod6 <- lmer(specific_recog ~ condition + valence + (1 | code_s1), data_ind %>% filter(component == "object"))
-# mod7 <- lmer(specific_recog ~ condition*valence + (1 | code_s1), data_ind %>% filter(component == "object"))
-# anova(mod6, mod7)
-
-```
-A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on specific recognition of objects showed that ......
-
-### Data plots
+###Data plots
 ```{r}
 # summarize data for plotting
 data_summary <- data_ind %>% 
+  filter(type == "same") %>% 
   group_by(condition, component,valence) %>% 
   summarise(mean_spe_recog = mean(specific_recog, na.rm = T), 
             sd_spe_recog = sd(specific_recog, na.rm = TRUE), 
@@ -304,14 +271,19 @@ data_summary <- data_ind %>%
             sd_gen_recog = sd(general_recog, na.rm = TRUE), 
             se_gen_recog = sd_gen_recog/sqrt(n()), 
             ci_gen_recog =  1.96*se_gen_recog, # qt(0.975,df=length(general_recog)-1)
+            # mean_all_recog = mean(all_recog, na.rm = T), 
+            # sd_all_recog = sd(all_recog, na.rm = TRUE), 
+            # se_all_recog = sd_all_recog/sqrt(n()), 
+            # ci_all_recog =  1.96*se_all_recog, # qt(0.975,df=length(general_recog)-1)
             count = n())
 # order the level of condition
 # data_summary$condition <- factor(data_summary$condition, levels=c('wake', 'sleep'), ordered=TRUE)
 # data_summary$component <- factor(data_summary$component, levels=c('object', 'background'), ordered=TRUE)
 
-head(data_summary)
+kable(head(data_summary, 8), digits = 2)
 ```
 
+The results of general recognition of the two groups (wake and sleep) is in the subplot A blow.
 ```{r}
 # plot general recognition
 p1 <- ggplot(data_summary , aes(x = condition, y = mean_gen_recog, fill = component))+
@@ -326,6 +298,7 @@ p1 <- ggplot(data_summary , aes(x = condition, y = mean_gen_recog, fill = compon
 p2 <- ggplot(data_summary , aes(x = condition, y = mean_spe_recog, fill = component))+
   geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
   geom_errorbar(aes(ymin=mean_spe_recog - ci_spe_recog, ymax=mean_spe_recog + ci_spe_recog), position=position_dodge(.5), width=.2, size=1) +
+  #geom_point(data = data_ind, aes(x = condition, y = general_recog, fill = component), position=position_dodge(.5), color = "darkred", alpha = .5)+
   facet_grid(. ~ valence)+
   labs(title = "Specific recognition")+
   scale_fill_grey()+ ggthemes::theme_few()
@@ -333,14 +306,55 @@ p2 <- ggplot(data_summary , aes(x = condition, y = mean_spe_recog, fill = compon
 plot_grid(p1, p2, ncol = 1, labels = c('A', 'B'))
 ```
 
+And the result figure in the original study is Fig. 3a and 3b.
 
+![**Fig. 3.** "Mean recognition memory for objects and backgrounds in the three delay conditions: 30 min, wake delay, and sleep delay. Separate graphs show results for (a) general recognition for negative scenes, (b) general recognition for neutral scenes, (c) specific recognition for negative scenes, and (d) specific recognition for neutral scenes. The dotted arrows highlight the difference in memory for negative arousing objects between the 30-min condition and the 12-hr sleep condition."](original_paper/Fig 3.gif)
+
+
+###Exploratory analyses
+```{r}
+## test on the 2-way interaction on specific recognition of object
+anova_2way_spe_recog = ezANOVA(
+    data = data_ind %>% filter(type == "same", component == "object"),
+    dv = .(specific_recog),
+    wid = .(code_s1), 
+    within = .(valence),
+    between = .(condition)
+)
+print(anova_2way_spe_recog)
+
+## test on the 2-way interaction on specific recognition of background
+anova_2way_spe_recog_bgd = ezANOVA(
+    data = data_ind %>% filter(type == "same", component == "background"),
+    dv = .(specific_recog),
+    wid = .(code_s1), 
+    within = .(valence),
+    between = .(condition)
+)
+print(anova_2way_spe_recog_bgd)
+```
+A 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on specific recognition of objects showed a main effect of valence, *F*(1, 21) = 37.72, *p* < .001, $\eta^2_{p}$ = .168. However, there was no significant condition by valence interaction effect on the specific recognition of objects, *F*(1, 21) = 0.63, *p* = .435, $\eta^2_{p}$ = .003. And a 2 (condition: sleep, wake) × 2 (valence: negative, neutral) mixed ANOVA on specific recognition of background also showed a condition by valence interaction, *F*(1, 21) = 23.48, *p* < .001, $\eta^2_{p}$ = .190. The result of specific recognition of objects is shown in the subplot B above.
 
 ## Discussion
 
 ### Summary of Replication Attempt
 
-Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+The current replication study did not find a condition (sleep vs. wake) by valence (neutral vs. negative) on general or specific recognition of objects. The main effect of valence on the general recognition of backgrounds showed that backgrounds in a neutral scene were better recognized than those in a negative scene, regardless of the sleep condition. Taken together, the current study failed to replicate the original result.
 
 ### Commentary
 
-Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
+The current study has a small sameple size (sleep condition: *n* = 14; wake condition: *n* = 9), and thus may have small statistical power to detect the target effect. However, compared to the original effect size of the condition by valence interaction on general recognition of objects ($\eta^2_{p}$ = .20), the current effect size is still very small ($\eta^2_{p}$ = .025). Even with the planned sample size (*n* = 48), it would only have 45% power to detect such an interaction effect. 
+
+It should also be noted that the variance of the general recognition is also very large in both sleep conditions (see plots below). There are individuals who got 0 general recognition rate, and there are also individuals who got more than 80% general recognition rate. The large individual differences in the task performance (noise) made it more difficult to understand of the effect of interest.
+
+```{r}
+ggplot(data_summary , aes(x = condition, y = mean_gen_recog, fill = component))+
+  geom_bar(color = "black", stat = "identity", position=position_dodge(), width=0.5) + 
+  geom_errorbar(aes(ymin=mean_gen_recog - ci_gen_recog, ymax=mean_gen_recog + ci_gen_recog), position=position_dodge(.5), width=.2, size=1) +
+  geom_point(data = data_ind, aes(x = condition, y = general_recog, fill = component), position=position_dodge(.5), color = "darkred", alpha = .5)+
+  facet_grid(. ~ valence)+
+  labs(title = "General recognition")+
+  scale_fill_grey()+ ggthemes::theme_few()
+```
+
+
