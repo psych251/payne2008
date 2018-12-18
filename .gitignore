@@ -12,7 +12,6 @@ mturk_input.csv
 *.doc
 *.jpg
 *.txt
-*.gif
 *.Rproj
 *.Rproj.user
 *.Rhistory
